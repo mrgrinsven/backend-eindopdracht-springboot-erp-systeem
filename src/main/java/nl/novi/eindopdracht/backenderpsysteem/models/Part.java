@@ -2,6 +2,8 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "parts")
 public class Part extends Audit{
@@ -25,8 +27,8 @@ public class Part extends Audit{
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
-    @OneToOne(mappedBy = "part")
-    private StockMovement stockMovement;
+    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+    private List<StockMovement> movements;
 
 
     public Long getId() {

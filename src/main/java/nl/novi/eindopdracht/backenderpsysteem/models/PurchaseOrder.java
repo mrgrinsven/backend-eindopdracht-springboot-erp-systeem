@@ -28,11 +28,11 @@ public class PurchaseOrder extends Audit{
     private LocalDate deliveryDate;
     private DeliveryStatus status;
 
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
     private List<Part> partList;
 
-    @OneToOne(mappedBy = "purchaseOrder")
-    private StockMovement stockMovement;
+    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
+    private List<StockMovement> movements;
 
     public Long getId() {
         return this.id;

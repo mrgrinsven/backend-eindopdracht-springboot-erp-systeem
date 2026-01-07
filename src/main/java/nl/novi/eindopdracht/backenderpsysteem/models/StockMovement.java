@@ -15,16 +15,16 @@ public class StockMovement extends Audit {
     private Integer quantity;
     private Integer type;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchase_orders")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_order_id")
     private PurchaseOrder purchaseOrder;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "work_orders")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parts")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_id")
     private Part part;
 
     public Long getId() {
