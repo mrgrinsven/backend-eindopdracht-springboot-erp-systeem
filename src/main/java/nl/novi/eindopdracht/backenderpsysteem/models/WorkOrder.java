@@ -24,6 +24,9 @@ public class WorkOrder extends Audit {
     @OneToMany(mappedBy ="workOrder", fetch = FetchType.LAZY)
     private List<Part> partList;
 
+    @OneToOne(mappedBy = "workOrder")
+    private StockMovement stockMovement;
+
     public Long getId() {
         return id;
     }

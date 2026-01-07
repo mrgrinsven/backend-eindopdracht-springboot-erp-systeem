@@ -31,6 +31,9 @@ public class PurchaseOrder extends Audit{
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Part> partList;
 
+    @OneToOne(mappedBy = "purchaseOrder")
+    private StockMovement stockMovement;
+
     public Long getId() {
         return this.id;
     }

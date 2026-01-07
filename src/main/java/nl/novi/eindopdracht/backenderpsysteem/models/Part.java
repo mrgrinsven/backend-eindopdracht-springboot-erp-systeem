@@ -25,6 +25,10 @@ public class Part extends Audit{
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
+    @OneToOne(mappedBy = "part")
+    private StockMovement stockMovement;
+
+
     public Long getId() {
         return this.id;
     }

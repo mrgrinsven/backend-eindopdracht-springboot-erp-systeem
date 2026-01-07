@@ -1,15 +1,12 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "stock_movements")
-public class StockMovement extends Audit{
+public class StockMovement extends Audit {
 
     @Id
     @GeneratedValue
@@ -17,6 +14,18 @@ public class StockMovement extends Audit{
     private LocalDate date;
     private Integer quantity;
     private Integer type;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_orders")
+    private PurchaseOrder purchaseOrder;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_orders")
+    private WorkOrder workOrder;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parts")
+    private Part part;
 
     public Long getId() {
         return this.id;
