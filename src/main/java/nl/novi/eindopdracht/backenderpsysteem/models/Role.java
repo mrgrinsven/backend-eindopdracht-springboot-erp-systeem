@@ -10,5 +10,6 @@ import jakarta.persistence.Table;
 public class Role {
 
     @Id
+    Long id;
     private String role;
 }

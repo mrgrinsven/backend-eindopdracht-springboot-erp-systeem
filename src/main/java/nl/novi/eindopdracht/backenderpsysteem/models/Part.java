@@ -1,13 +1,10 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "parts")
-public class Part {
+public class Part extends Audit{
 
     @Id
     @GeneratedValue
@@ -19,6 +16,14 @@ public class Part {
     private Double movingAveragePrice;
     private Integer reorderPoint;
     private Integer reorderQuantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_order_id")
+    private PurchaseOrder purchaseOrder;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_order_id")
+    private WorkOrder workOrder;
 
     public Long getId() {
         return this.id;

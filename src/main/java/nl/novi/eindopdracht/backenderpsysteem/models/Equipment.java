@@ -1,13 +1,12 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "equipment")
-public class Equipment {
+public class Equipment extends Audit {
 
     @Id
     @GeneratedValue
@@ -15,6 +14,9 @@ public class Equipment {
     private String name;
     private Double totalMaintenanceCost;
     private Integer totalMaintenanceTime;
+
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
+    private List<WorkOrder> workOrders;
 
     public String getName() {
         return this.name;

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "stock_movements")
-public class StockMovement {
+public class StockMovement extends Audit{
 
     @Id
     @GeneratedValue

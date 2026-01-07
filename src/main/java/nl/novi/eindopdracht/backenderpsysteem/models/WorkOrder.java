@@ -1,15 +1,13 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "work_orders")
-public class WorkOrder {
+public class WorkOrder extends Audit {
 
     @Id
     @GeneratedValue
@@ -18,6 +16,13 @@ public class WorkOrder {
     private Integer quantity;
     private Boolean status;
     private Integer repairTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipment_id", nullable = false)
+    private Equipment equipmentId;
+
+    @OneToMany(mappedBy ="workOrder", fetch = FetchType.LAZY)
+    private List<Part> partList;
 
     public Long getId() {
         return id;
@@ -57,5 +62,13 @@ public class WorkOrder {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Equipment getEquipmentId() {
+        return this.equipmentId;
+    }
+
+    public void setEquipmentId(Equipment equipmentId) {
+        this.equipmentId = equipmentId;
     }
 }

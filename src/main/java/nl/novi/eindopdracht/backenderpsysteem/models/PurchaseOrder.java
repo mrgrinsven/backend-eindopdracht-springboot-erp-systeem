@@ -1,15 +1,13 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "purchase_orders")
-public class PurchaseOrder {
+public class PurchaseOrder extends Audit{
 
     public enum DeliveryStatus {
         OPEN,
@@ -29,6 +27,9 @@ public class PurchaseOrder {
     private Double totalPrice;
     private LocalDate deliveryDate;
     private DeliveryStatus status;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Part> partList;
 
     public Long getId() {
         return this.id;
