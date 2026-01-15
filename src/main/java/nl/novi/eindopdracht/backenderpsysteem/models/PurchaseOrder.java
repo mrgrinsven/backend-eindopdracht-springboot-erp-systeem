@@ -3,36 +3,32 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "purchase_orders")
 public class PurchaseOrder extends Audit{
-
-    public enum DeliveryStatus {
-        OPEN,
-        PARTIAL,
-        CLOSED,
-        CANCELED
-    }
-
     @Id
     @GeneratedValue
     Long id;
     private LocalDate creationDate;
-    private LocalDate orderDate;
     private String vendorName;
-    private Integer quantity;
-    private Double unitPrice;
     private Double totalPrice;
-    private LocalDate deliveryDate;
-    private DeliveryStatus status;
+    private Boolean orderStatus;
 
     @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
     private List<Part> partList;
 
     @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
     private List<StockMovement> movements;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "purchase_order_line_items",
+            joinColumns = @JoinColumn(name = "purchase_order_id")
+    )
+    private List<PurchaseOrderLineItem> items = new ArrayList<>();
 
     public Long getId() {
         return this.id;
@@ -50,36 +46,12 @@ public class PurchaseOrder extends Audit{
         this.creationDate = creationDate;
     }
 
-    public LocalDate getOrderDate() {
-        return this.orderDate;
-    }
-
-    public void setOrderDate(LocalDate orderDAte) {
-        this.orderDate = orderDAte;
-    }
-
     public String getVendorName() {
         return this.vendorName;
     }
 
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
-    }
-
-    public Integer getQuantity() {
-        return this.quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getUnitPrice() {
-        return this.unitPrice;
-    }
-
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public Double getTotalPrice() {
@@ -90,19 +62,11 @@ public class PurchaseOrder extends Audit{
         this.totalPrice = totalPrice;
     }
 
-    public LocalDate getDeliveryDate() {
-        return this.deliveryDate;
+    public Boolean getOrderStatus() {
+        return this.orderStatus;
     }
 
-    public void setDeliveryDate(LocalDate deliveryDAte) {
-        this.deliveryDate = deliveryDAte;
-    }
-
-    public DeliveryStatus getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(DeliveryStatus status) {
-        this.status = status;
+    public void setOrderStatus(Boolean orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

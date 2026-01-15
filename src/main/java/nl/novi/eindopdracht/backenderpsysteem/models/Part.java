@@ -2,6 +2,7 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,8 +29,7 @@ public class Part extends Audit{
     private WorkOrder workOrder;
 
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
-    private List<StockMovement> movements;
-
+    private List<StockMovement> movements = new ArrayList<>();
 
     public Long getId() {
         return this.id;

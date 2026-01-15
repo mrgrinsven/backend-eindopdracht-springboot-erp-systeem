@@ -2,6 +2,7 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class Equipment extends Audit {
     private Integer totalMaintenanceTime;
 
     @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
-    private List<WorkOrder> workOrders;
+    private List<WorkOrder> workOrders = new ArrayList<WorkOrder>();
 
     public String getName() {
         return this.name;

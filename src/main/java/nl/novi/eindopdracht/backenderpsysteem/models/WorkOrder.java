@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +14,6 @@ public class WorkOrder extends Audit {
     @GeneratedValue
     Long id;
     private LocalDate creationDate;
-    private Integer quantity;
     private Boolean status;
     private Integer repairTime;
 
@@ -26,6 +26,13 @@ public class WorkOrder extends Audit {
 
     @OneToMany(mappedBy = "workOrder", fetch = FetchType.LAZY)
     private List<StockMovement> movements;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "work_order_line_items",
+            joinColumns = @JoinColumn(name = "work_order_id")
+    )
+    private List<WorkOrderLineItem> items = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -41,14 +48,6 @@ public class WorkOrder extends Audit {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public Integer getRepairTime() {
