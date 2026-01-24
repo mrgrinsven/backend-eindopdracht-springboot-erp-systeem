@@ -31,12 +31,11 @@ public class Part extends Audit{
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
     private List<StockMovement> movements = new ArrayList<>();
 
+    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+    private List<PurchaseOrderLineItem> purchaseOrderLineItems = new ArrayList<>();
+
     public Long getId() {
         return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

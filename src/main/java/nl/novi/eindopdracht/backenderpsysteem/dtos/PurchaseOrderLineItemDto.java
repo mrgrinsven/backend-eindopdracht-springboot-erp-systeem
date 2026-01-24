@@ -1,12 +1,13 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
+import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrderLineItem;
+
 import java.time.LocalDate;
 
 public record PurchaseOrderLineItemDto(
-        Long partId,
-        String partName,
+        PartDto partDto,
         int quantity,
         double unitPrice,
-        String deliveryStatus,
+        PurchaseOrderLineItem.DeliveryStatus deliveryStatus,
         LocalDate deliveryDate
 ) {}

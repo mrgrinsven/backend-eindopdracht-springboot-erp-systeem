@@ -2,8 +2,6 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "stock_movements")
 public class StockMovement extends Audit {
@@ -11,9 +9,10 @@ public class StockMovement extends Audit {
     @Id
     @GeneratedValue
     Long id;
-    private LocalDate date;
     private Integer quantity;
     private Integer type;
+    private Long orderId;
+    private String orderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_order_id")
@@ -31,18 +30,6 @@ public class StockMovement extends Audit {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return this.date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public Integer getQuantity() {
         return this.quantity;
     }
@@ -57,5 +44,45 @@ public class StockMovement extends Audit {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public PurchaseOrder getPurchaseOrder() {
+        return this.purchaseOrder;
+    }
+
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
+    }
+
+    public Part getPart() {
+        return this.part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
+    public WorkOrder getWorkOrder() {
+        return this.workOrder;
+    }
+
+    public void setWorkOrder(WorkOrder workOrder) {
+        this.workOrder = workOrder;
+    }
+
+    public Long getOrderId() {
+        return this.orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderType() {
+        return this.orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 }

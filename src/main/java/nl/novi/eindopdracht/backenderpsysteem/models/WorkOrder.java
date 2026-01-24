@@ -13,13 +13,12 @@ public class WorkOrder extends Audit {
     @Id
     @GeneratedValue
     Long id;
-    private LocalDate creationDate;
     private Boolean status;
     private Integer repairTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", nullable = false)
-    private Equipment equipmentId;
+    private Equipment equipment;
 
     @OneToMany(mappedBy ="workOrder", fetch = FetchType.LAZY)
     private List<Part> partList;
@@ -42,14 +41,6 @@ public class WorkOrder extends Audit {
         this.id = id;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public Integer getRepairTime() {
         return repairTime;
     }
@@ -67,10 +58,10 @@ public class WorkOrder extends Audit {
     }
 
     public Equipment getEquipmentId() {
-        return this.equipmentId;
+        return this.equipment;
     }
 
     public void setEquipmentId(Equipment equipmentId) {
-        this.equipmentId = equipmentId;
+        this.equipment = equipmentId;
     }
 }

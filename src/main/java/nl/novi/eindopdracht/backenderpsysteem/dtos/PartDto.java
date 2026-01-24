@@ -9,5 +9,6 @@ public record PartDto(
         Double movingAveragePrice,
         Integer reorderPoint,
         Integer reorderQuantity,
-        String createdBy
+        String createdBy,
+        String modifiedBy
 ) {}

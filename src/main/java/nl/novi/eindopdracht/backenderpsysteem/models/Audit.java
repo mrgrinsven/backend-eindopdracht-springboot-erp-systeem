@@ -35,4 +35,20 @@ public abstract class Audit {
     private String getUser() {
         return "UserPlaceholder";
     }
+
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public String getModifiedBy() {
+        return this.modifiedBy;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return this.creationDate;
+    }
+
+    public LocalDateTime getModificationDate() {
+        return this.modificationDate;
+    }
 }
