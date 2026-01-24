@@ -46,30 +46,6 @@ public class StockMovement extends Audit {
         this.type = type;
     }
 
-    public PurchaseOrder getPurchaseOrder() {
-        return this.purchaseOrder;
-    }
-
-    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
-        this.purchaseOrder = purchaseOrder;
-    }
-
-    public Part getPart() {
-        return this.part;
-    }
-
-    public void setPart(Part part) {
-        this.part = part;
-    }
-
-    public WorkOrder getWorkOrder() {
-        return this.workOrder;
-    }
-
-    public void setWorkOrder(WorkOrder workOrder) {
-        this.workOrder = workOrder;
-    }
-
     public Long getOrderId() {
         return this.orderId;
     }
@@ -84,5 +60,17 @@ public class StockMovement extends Audit {
 
     public void setOrderType(String orderType) {
         this.orderType = orderType;
+    }
+
+    public PurchaseOrder getPurchaseOrder() {
+        return this.purchaseOrder;
+    }
+
+    public WorkOrder getWorkOrder() {
+        return this.workOrder;
+    }
+
+    public Part getPart() {
+        return this.part;
     }
 }

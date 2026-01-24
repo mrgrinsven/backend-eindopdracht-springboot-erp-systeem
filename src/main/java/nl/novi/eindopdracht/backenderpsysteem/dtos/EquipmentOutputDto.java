@@ -2,11 +2,11 @@ package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
 import java.util.List;
 
-public record EquipmentDto(
+public record EquipmentOutputDto(
         Long id,
         String name,
         Double totalMaintenanceCost,
         Integer totalMaintenanceTime,
-        List<WorkOrderDto> workOrders,
-        String createdBy
+        String createdBy,
+        List<WorkOrderOutputDto> workOrders
 ) {}

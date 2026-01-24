@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.backenderpsysteem.mappers;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.models.Equipment;
 
@@ -12,17 +12,18 @@ public class EquipmentMapper {
         return equipment;
     }
 
-    public static EquipmentDto toDto(Equipment equipment) {
-        return new EquipmentDto(
+    public static EquipmentOutputDto toDto(Equipment equipment) {
+        return new EquipmentOutputDto(
                 equipment.getId(),
                 equipment.getName(),
                 equipment.getTotalMaintenanceCost(),
                 equipment.getTotalMaintenanceTime(),
+                equipment.getCreatedBy(),
                 equipment.getWorkOrders()
                         .stream()
                         .map(WorkOrderMapper::toDto)
-                        .toList(),
-                equipment.getCreatedBy()
+                        .toList()
+
         );
     }
 }

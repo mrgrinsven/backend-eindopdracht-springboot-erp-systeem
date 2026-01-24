@@ -1,26 +1,28 @@
 package nl.novi.eindopdracht.backenderpsysteem.mappers;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderLineItemDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.POLineItemOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrderLineItem;
 
 public class PurchaseOrderLineItemMapper {
 
-    public static PurchaseOrderLineItem toEntity(PurchaseOrderLineItemDto purchaseOrderLineItemDto) {
+    public static PurchaseOrderLineItem toEntity(POLineItemOutputDto POLineItemOutputDto) {
         PurchaseOrderLineItem purchaseOrderLineItem = new PurchaseOrderLineItem();
-        purchaseOrderLineItem.setQuantity(purchaseOrderLineItemDto.quantity());
-        purchaseOrderLineItem.setUnitPrice(purchaseOrderLineItemDto.unitPrice());
-        purchaseOrderLineItem.setDeliveryDate(purchaseOrderLineItemDto.deliveryDate());
+        purchaseOrderLineItem.setQuantity(POLineItemOutputDto.quantity());
+        purchaseOrderLineItem.setUnitPrice(POLineItemOutputDto.unitPrice());
+        purchaseOrderLineItem.setDeliveryDate(POLineItemOutputDto.deliveryDate());
 
         return purchaseOrderLineItem;
     }
 
-    public static PurchaseOrderLineItemDto toDto(PurchaseOrderLineItem purchaseOrderLineItem) {
-        return new PurchaseOrderLineItemDto(
-                PartMapper.toDto(purchaseOrderLineItem.getPart()),
+    public static POLineItemOutputDto toDto(PurchaseOrderLineItem purchaseOrderLineItem) {
+        return new POLineItemOutputDto(
+                purchaseOrderLineItem.getPart().getId(),
+                purchaseOrderLineItem.getPart().getName(),
+                purchaseOrderLineItem.getPart().getPartNumber(),
                 purchaseOrderLineItem.getQuantity(),
                 purchaseOrderLineItem.getUnitPrice(),
-                purchaseOrderLineItem.getDeliveryStatus(),
-                purchaseOrderLineItem.getDeliveryDate()
+                purchaseOrderLineItem.getDeliveryDate(),
+                purchaseOrderLineItem.getDeliveryStatus()
         );
     }
 }

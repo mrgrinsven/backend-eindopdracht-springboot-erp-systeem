@@ -19,6 +19,10 @@ public class Equipment extends Audit {
     @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
     private List<WorkOrder> workOrders = new ArrayList<WorkOrder>();
 
+    public Long getId() {
+        return this.id;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -41,10 +45,6 @@ public class Equipment extends Audit {
 
     public void setTotalMaintenanceTime(Integer totalMaintenanceTime) {
         this.totalMaintenanceTime = totalMaintenanceTime;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     public List<WorkOrder> getWorkOrders() {

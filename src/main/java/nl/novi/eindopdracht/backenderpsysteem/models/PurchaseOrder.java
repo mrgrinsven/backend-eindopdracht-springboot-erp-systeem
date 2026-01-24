@@ -13,6 +13,7 @@ public class PurchaseOrder extends Audit {
     @Id
     @GeneratedValue
     Long id;
+
     private String vendorName;
     private Double totalPrice;
     private Boolean orderStatus;

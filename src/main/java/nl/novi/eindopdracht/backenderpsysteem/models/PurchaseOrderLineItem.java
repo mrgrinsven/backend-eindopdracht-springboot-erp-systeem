@@ -18,10 +18,12 @@ public class PurchaseOrderLineItem {
     @Id
     @GeneratedValue
     Long id;
+
     private int quantity;
     private double unitPrice;
-    private DeliveryStatus deliveryStatus;
     private LocalDate deliveryDate;
+    private DeliveryStatus deliveryStatus;
+
 
     @ManyToOne
     @JoinColumn(name = "part_id")
@@ -31,12 +33,8 @@ public class PurchaseOrderLineItem {
     @JoinColumn(name = "purchase_order_id" )
     private PurchaseOrder purchaseOrder;
 
-    public Part getPart() {
-        return this.part;
-    }
-
-    public void setPart(Part part) {
-        this.part = part;
+    public Long getId() {
+        return this.id;
     }
 
     public int getQuantity() {
@@ -55,14 +53,6 @@ public class PurchaseOrderLineItem {
         this.unitPrice = unitPrice;
     }
 
-    public DeliveryStatus getDeliveryStatus() {
-        return this.deliveryStatus;
-    }
-
-    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
-
     public LocalDate getDeliveryDate() {
         return this.deliveryDate;
     }
@@ -71,15 +61,19 @@ public class PurchaseOrderLineItem {
         this.deliveryDate = deliveryDate;
     }
 
-    public Long getId() {
-        return this.id;
+    public DeliveryStatus getDeliveryStatus() {
+        return this.deliveryStatus;
+    }
+
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public Part getPart() {
+        return this.part;
     }
 
     public PurchaseOrder getPurchaseOrder() {
         return this.purchaseOrder;
-    }
-
-    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
-        this.purchaseOrder = purchaseOrder;
     }
 }

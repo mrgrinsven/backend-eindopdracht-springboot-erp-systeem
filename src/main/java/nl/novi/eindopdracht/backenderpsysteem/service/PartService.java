@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.backenderpsysteem.service;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.PartDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.exceptions.ResourceNotFoundException;
 import nl.novi.eindopdracht.backenderpsysteem.mappers.PartMapper;
 import nl.novi.eindopdracht.backenderpsysteem.models.Part;
@@ -15,7 +15,7 @@ public class PartService {
         this.partRepository = partRepository;
     }
 
-    public PartDto getPartById(long id) {
+    public PartOutputDto getPartById(long id) {
         Part part = partRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Part " + id + " not found"));
 

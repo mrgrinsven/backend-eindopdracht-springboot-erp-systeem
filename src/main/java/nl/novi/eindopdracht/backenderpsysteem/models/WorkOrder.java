@@ -13,36 +13,30 @@ public class WorkOrder extends Audit {
     @Id
     @GeneratedValue
     Long id;
-    private Boolean status;
+
     private Integer repairTime;
+    private Boolean status;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", nullable = false)
     private Equipment equipment;
 
     @OneToMany(mappedBy ="workOrder", fetch = FetchType.LAZY)
-    private List<Part> partList;
+    private List<Part> partList = new ArrayList<>();
 
     @OneToMany(mappedBy = "workOrder", fetch = FetchType.LAZY)
-    private List<StockMovement> movements;
+    private List<StockMovement> movements = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-            name = "work_order_line_items",
-            joinColumns = @JoinColumn(name = "work_order_id")
-    )
+    @OneToMany(mappedBy = "workOrder")
     private List<WorkOrderLineItem> items = new ArrayList<>();
 
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return this.id;
     }
 
     public Integer getRepairTime() {
-        return repairTime;
+        return this.repairTime;
     }
 
     public void setRepairTime(Integer repairTime) {
@@ -50,18 +44,18 @@ public class WorkOrder extends Audit {
     }
 
     public Boolean getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public Equipment getEquipmentId() {
+    public Equipment getEquipment() {
         return this.equipment;
     }
 
-    public void setEquipmentId(Equipment equipmentId) {
-        this.equipment = equipmentId;
+    public List<WorkOrderLineItem> getItems() {
+        return this.items;
     }
 }

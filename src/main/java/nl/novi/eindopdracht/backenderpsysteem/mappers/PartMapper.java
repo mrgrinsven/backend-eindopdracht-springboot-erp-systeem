@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.backenderpsysteem.mappers;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.PartDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.models.Part;
 
@@ -17,8 +17,8 @@ public class PartMapper {
         return part;
     }
 
-    public static PartDto toDto(Part part) {
-        return new PartDto(
+    public static PartOutputDto toDto(Part part) {
+        return new PartOutputDto(
                 part.getId(),
                 part.getName(),
                 part.getPartNumber(),

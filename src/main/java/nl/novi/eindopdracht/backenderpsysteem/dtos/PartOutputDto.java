@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
-public record PartDto(
+public record PartOutputDto(
         Long id,
         String name,
         String partNumber,

@@ -1,27 +1,41 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-@Embeddable
+@Entity
+@Table(name = "work_order_line_items")
 public class WorkOrderLineItem {
-    @ManyToOne
-    private Part part;
+    @Id
+    @GeneratedValue
+    Long id;
+
     private int quantity;
 
-    public Part getPart() {
-        return part;
-    }
+    @ManyToOne
+    @JoinColumn(name = "part_id" )
+    private Part part;
 
-    public void setPart(Part part) {
-        this.part = part;
+    @ManyToOne
+    @JoinColumn(name = "work_order_id")
+    private WorkOrder workOrder;
+
+    public Long getId() {
+        return this.id;
     }
 
     public int getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Part getPart() {
+        return this.part;
+    }
+
+    public WorkOrder getWorkOrder() {
+        return this.workOrder;
     }
 }

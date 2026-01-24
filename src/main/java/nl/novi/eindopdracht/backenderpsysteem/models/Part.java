@@ -12,6 +12,7 @@ public class Part extends Audit{
     @Id
     @GeneratedValue
     Long id;
+
     private String name;
     private String partNumber;
     private Integer stockQuantity;
@@ -33,6 +34,9 @@ public class Part extends Audit{
 
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
     private List<PurchaseOrderLineItem> purchaseOrderLineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+    private List<WorkOrderLineItem> workOrderLineItems = new ArrayList<>();
 
     public Long getId() {
         return this.id;
