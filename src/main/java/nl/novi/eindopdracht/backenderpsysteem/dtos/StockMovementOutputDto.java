@@ -1,15 +1,17 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
+import nl.novi.eindopdracht.backenderpsysteem.models.StockMovement;
+
 import java.time.LocalDateTime;
 
-public record StockMovementDto(
+public record StockMovementOutputDto(
         Long id,
         Long partId,
         String partName,
         Integer quantity,
         Integer type,
-        LocalDateTime date,
         Long orderID,
-        String orderType,
-        String createdBy
+        StockMovement.OrderType orderType,
+        String createdBy,
+        LocalDateTime date
 ) {}

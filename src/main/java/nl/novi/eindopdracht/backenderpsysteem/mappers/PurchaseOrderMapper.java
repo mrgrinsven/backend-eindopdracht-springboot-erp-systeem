@@ -3,9 +3,6 @@ package nl.novi.eindopdracht.backenderpsysteem.mappers;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrder;
-import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrderLineItem;
-
-import java.util.List;
 
 public class PurchaseOrderMapper {
 

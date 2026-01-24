@@ -1,29 +1,43 @@
 package nl.novi.eindopdracht.backenderpsysteem.mappers;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.models.StockMovement;
 
 public class StockMovementMapper {
 
-    public static StockMovement toEntity(StockMovementDto stockMovementDto) {
+    public static StockMovement toEntity(StockMovementOutputDto stockMovementOutputDto) {
         StockMovement stockMovement = new StockMovement();
-        stockMovement.setQuantity(stockMovementDto.quantity());
-        stockMovement.setType(stockMovementDto.type());
+        stockMovement.setQuantity(stockMovementOutputDto.quantity());
+        stockMovement.setType(stockMovementOutputDto.type());
 
         return stockMovement;
     }
 
-    public static StockMovementDto toDto(StockMovement stockMovement) {
-        return new StockMovementDto(
+    public static StockMovementOutputDto toWoDto(StockMovement stockMovement) {
+        return new StockMovementOutputDto(
                 stockMovement.getId(),
                 stockMovement.getPart().getId(),
                 stockMovement.getPart().getName(),
                 stockMovement.getQuantity(),
                 stockMovement.getType(),
-                stockMovement.getCreationDate(),
-                stockMovement.getOrderId(),
+                stockMovement.getWorkOrder().getId(),
                 stockMovement.getOrderType(),
-                stockMovement.getCreatedBy()
+                stockMovement.getCreatedBy(),
+                stockMovement.getCreationDate()
+        );
+    }
+
+    public static StockMovementOutputDto toPoDto(StockMovement stockMovement) {
+        return new StockMovementOutputDto(
+                stockMovement.getId(),
+                stockMovement.getPart().getId(),
+                stockMovement.getPart().getName(),
+                stockMovement.getQuantity(),
+                stockMovement.getType(),
+                stockMovement.getPurchaseOrder().getId(),
+                stockMovement.getOrderType(),
+                stockMovement.getCreatedBy(),
+                stockMovement.getCreationDate()
         );
     }
 }

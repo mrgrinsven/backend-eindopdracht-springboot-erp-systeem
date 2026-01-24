@@ -6,13 +6,17 @@ import jakarta.persistence.*;
 @Table(name = "stock_movements")
 public class StockMovement extends Audit {
 
+    public enum OrderType {
+        WORK_ORDER,
+        PURCHASE_ORDER
+    }
+
     @Id
     @GeneratedValue
     Long id;
     private Integer quantity;
     private Integer type;
-    private Long orderId;
-    private String orderType;
+    private OrderType orderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_order_id")
@@ -46,19 +50,11 @@ public class StockMovement extends Audit {
         this.type = type;
     }
 
-    public Long getOrderId() {
-        return this.orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderType() {
+    public OrderType getOrderType() {
         return this.orderType;
     }
 
-    public void setOrderType(String orderType) {
+    public void setOrderType(OrderType orderType) {
         this.orderType = orderType;
     }
 
