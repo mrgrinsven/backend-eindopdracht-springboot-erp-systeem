@@ -23,7 +23,7 @@ public class PartController {
 
     @PostMapping
     public ResponseEntity<PartOutputDto> createPart(@Valid @RequestBody PartInputDto partInputDto) {
-        PartOutputDto partOutputDto = service.createPart(partInputDto);
+        PartOutputDto partOutputDto = this.service.createPart(partInputDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/" + partOutputDto.id()).toUriString());
@@ -33,11 +33,11 @@ public class PartController {
 
     @GetMapping
     public ResponseEntity<List<PartOutputDto>> getAllParts() {
-        return ResponseEntity.ok(service.getAllParts());
+        return ResponseEntity.ok(this.service.getAllParts());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<PartOutputDto> getPartById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getPartById(id));
+        return ResponseEntity.ok(this.service.getPartById(id));
     }
 }

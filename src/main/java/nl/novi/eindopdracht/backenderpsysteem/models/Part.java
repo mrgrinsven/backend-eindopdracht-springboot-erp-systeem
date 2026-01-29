@@ -31,7 +31,7 @@ public class Part extends Audit{
     private List<POLineItem> POLineItems;
 
     @OneToMany(mappedBy = "part")
-    private List<WorkOrderLineItem> workOrderLineItems;
+    private List<WOLineItem> WOLineItems;
 
     public Long getId() {
         return this.id;

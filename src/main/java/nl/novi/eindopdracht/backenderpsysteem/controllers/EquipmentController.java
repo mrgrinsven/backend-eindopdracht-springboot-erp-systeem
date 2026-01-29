@@ -23,7 +23,7 @@ public class EquipmentController {
 
     @PostMapping
     public ResponseEntity<EquipmentOutputDto> createEquipment(@Valid @RequestBody EquipmentInputDto equipmentInputDto) {
-        EquipmentOutputDto equipmentOutputDto = service.createEquipment(equipmentInputDto);
+        EquipmentOutputDto equipmentOutputDto = this.service.createEquipment(equipmentInputDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/" + equipmentOutputDto.id()).toUriString());
@@ -33,11 +33,11 @@ public class EquipmentController {
 
     @GetMapping
     public ResponseEntity<List<EquipmentOutputDto>> getAllEquipments() {
-        return ResponseEntity.ok(service.getAllEquipments());
+        return ResponseEntity.ok(this.service.getAllEquipments());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<EquipmentOutputDto> getEquipmentById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getEquipmentById(id));
+        return ResponseEntity.ok(this.service.getEquipmentById(id));
     }
 }

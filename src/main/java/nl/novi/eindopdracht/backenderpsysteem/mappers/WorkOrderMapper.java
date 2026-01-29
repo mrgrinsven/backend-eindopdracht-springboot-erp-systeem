@@ -22,7 +22,7 @@ public class WorkOrderMapper {
                 workOrder.getModifiedBy(),
                 workOrder.getItems()
                         .stream()
-                        .map(WorkOrderLineItemMapper::toDto).
+                        .map(WOLineItemMapper::toDto).
                         toList()
         );
     }

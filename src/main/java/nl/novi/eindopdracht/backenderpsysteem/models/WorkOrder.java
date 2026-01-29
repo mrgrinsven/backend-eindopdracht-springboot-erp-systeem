@@ -2,7 +2,6 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +21,11 @@ public class WorkOrder extends Audit {
     @JoinColumn(name = "equipment_id", nullable = false)
     private Equipment equipment;
 
-    @OneToMany(mappedBy ="workOrder", fetch = FetchType.LAZY)
-    private List<Part> partList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "workOrder", fetch = FetchType.LAZY)
-    private List<StockMovement> movements = new ArrayList<>();
+    @OneToMany(mappedBy = "workOrder")
+    private List<StockMovement> movements;
 
     @OneToMany(mappedBy = "workOrder")
-    private List<WorkOrderLineItem> items = new ArrayList<>();
+    private List<WOLineItem> items = new ArrayList<>();
 
     public Long getId() {
         return this.id;
@@ -55,7 +51,15 @@ public class WorkOrder extends Audit {
         return this.equipment;
     }
 
-    public List<WorkOrderLineItem> getItems() {
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
+
+    public List<WOLineItem> getItems() {
         return this.items;
+    }
+
+    public void setItems(List<WOLineItem> items) {
+        this.items = items;
     }
 }

@@ -22,7 +22,7 @@ public class PurchaseOrderController {
 
     @PostMapping
     public ResponseEntity<PurchaseOrderOutputDto> createPurchaseOrder(@Valid @RequestBody PurchaseOrderInputDto purchaseOrderInputDto) {
-        PurchaseOrderOutputDto purchaseOrderOutputDto = service.createPurchaseOrder(purchaseOrderInputDto);
+        PurchaseOrderOutputDto purchaseOrderOutputDto = this.service.createPurchaseOrder(purchaseOrderInputDto);
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/" + purchaseOrderOutputDto.id()).toUriString());
@@ -32,11 +32,11 @@ public class PurchaseOrderController {
 
     @GetMapping
     public ResponseEntity<List<PurchaseOrderOutputDto>> getAllPurchaseOrders() {
-        return ResponseEntity.ok(service.getAllPurchaseOrders());
+        return ResponseEntity.ok(this.service.getAllPurchaseOrders());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<PurchaseOrderOutputDto> getPurchaseOrderById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getPurchaseOrderById(id));
+        return ResponseEntity.ok(this.service.getPurchaseOrderById(id));
     }
 }

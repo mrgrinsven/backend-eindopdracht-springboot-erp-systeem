@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "work_order_line_items")
-public class WorkOrderLineItem {
+public class WOLineItem {
     @Id
     @GeneratedValue
     Long id;
@@ -35,7 +35,15 @@ public class WorkOrderLineItem {
         return this.part;
     }
 
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
     public WorkOrder getWorkOrder() {
         return this.workOrder;
+    }
+
+    public void setWorkOrder(WorkOrder workOrder) {
+        this.workOrder = workOrder;
     }
 }

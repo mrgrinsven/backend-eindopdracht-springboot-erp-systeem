@@ -1,5 +1,9 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
+import java.util.List;
+
 public record WorkOrderInputDto(
-        Integer repairTime
+        Long equipmentId,
+        Integer repairTime,
+        List<WOLineItemInputDto> items
 ) {}

@@ -36,7 +36,8 @@ public class EquipmentService {
 
     public EquipmentOutputDto getEquipmentById(Long id) {
         Equipment equipment = this.equipmentRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Equipment" + id + " not found"));
+                () -> new ResourceNotFoundException("Equipment" + id + " not found")
+        );
 
         return EquipmentMapper.toDto(equipment);
     }

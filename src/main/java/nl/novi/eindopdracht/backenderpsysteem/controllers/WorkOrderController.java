@@ -1,0 +1,43 @@
+package nl.novi.eindopdracht.backenderpsysteem.controllers;
+
+import jakarta.validation.Valid;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.WorkOrderInputDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.WorkOrderOutputDto;
+import nl.novi.eindopdracht.backenderpsysteem.models.WorkOrder;
+import nl.novi.eindopdracht.backenderpsysteem.service.WorkOrderService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/work-orders")
+public class WorkOrderController {
+    private final WorkOrderService service;
+
+    public WorkOrderController(WorkOrderService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<WorkOrderOutputDto> createWorkOrder(@Valid @RequestBody WorkOrderInputDto workOrderInputDto) {
+        WorkOrderOutputDto workOrderOutputDto = this.service.createWorkOrder(workOrderInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + workOrderOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(workOrderOutputDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<WorkOrderOutputDto>> getAllWorkOrders() {
+        return ResponseEntity.ok().body(this.service.getAllWorkOrders());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<WorkOrderOutputDto> getWorkOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(this.service.getWorkOrderById(id));
+    }
+}

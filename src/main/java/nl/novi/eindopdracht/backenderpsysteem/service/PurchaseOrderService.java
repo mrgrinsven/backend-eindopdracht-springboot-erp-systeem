@@ -12,6 +12,7 @@ import nl.novi.eindopdracht.backenderpsysteem.repositories.POLineItemRepository;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PartRepository;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PurchaseOrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class PurchaseOrderService {
         this.partRepository = partRepository;
     }
 
+    @Transactional
     public PurchaseOrderOutputDto createPurchaseOrder(PurchaseOrderInputDto purchaseOrderInputDto) {
         PurchaseOrder purchaseOrder = PurchaseOrderMapper.toEntity(purchaseOrderInputDto);
         purchaseOrder.setOrderStatus(true);
@@ -70,8 +72,8 @@ public class PurchaseOrderService {
 
     public PurchaseOrderOutputDto getPurchaseOrderById(Long id) {
         PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("PurchaseOrder " + id + " not found"));
-
+                () -> new ResourceNotFoundException("PurchaseOrder " + id + " not found")
+        );
         return PurchaseOrderMapper.toDto(purchaseOrder);
     }
 }

@@ -36,7 +36,8 @@ public class PartService {
 
     public PartOutputDto getPartById(Long id) {
         Part part = this.partRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Part " + id + " not found"));
+                () -> new ResourceNotFoundException("Part " + id + " not found")
+        );
 
         return PartMapper.toDto(part);
     }
