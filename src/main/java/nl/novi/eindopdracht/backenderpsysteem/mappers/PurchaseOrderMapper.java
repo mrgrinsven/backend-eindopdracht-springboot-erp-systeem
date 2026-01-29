@@ -24,7 +24,7 @@ public class PurchaseOrderMapper {
                 purchaseOrder.getModifiedBy(),
                 purchaseOrder.getItems()
                         .stream()
-                        .map(PurchaseOrderLineItemMapper::toDto)
+                        .map(POLineItemMapper::toDto)
                         .toList()
         );
     }

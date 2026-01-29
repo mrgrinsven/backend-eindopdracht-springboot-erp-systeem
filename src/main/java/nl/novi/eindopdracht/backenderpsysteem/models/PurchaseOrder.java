@@ -2,7 +2,6 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +17,11 @@ public class PurchaseOrder extends Audit {
     private Double totalPrice;
     private Boolean orderStatus;
 
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
-    private List<Part> partList;
-
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "purchaseOrder")
     private List<StockMovement> movements;
 
-    @OneToMany(mappedBy = "purchaseOrder")
-    private List<PurchaseOrderLineItem> items = new ArrayList<>();
+    @OneToMany(mappedBy = "purchaseOrder",  fetch = FetchType.LAZY)
+    private List<POLineItem> items = new ArrayList<>();
 
     public Long getId() {
         return this.id;
@@ -55,7 +51,11 @@ public class PurchaseOrder extends Audit {
         this.orderStatus = orderStatus;
     }
 
-    public List<PurchaseOrderLineItem> getItems() {
+    public List<POLineItem> getItems() {
         return this.items;
+    }
+
+    public void setItems(List<POLineItem> items) {
+        this.items = items;
     }
 }

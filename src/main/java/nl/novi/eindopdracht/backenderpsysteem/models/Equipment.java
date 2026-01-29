@@ -12,12 +12,13 @@ public class Equipment extends Audit {
     @Id
     @GeneratedValue
     Long id;
+
     private String name;
     private Double totalMaintenanceCost;
     private Integer totalMaintenanceTime;
 
     @OneToMany(mappedBy = "equipment", fetch = FetchType.LAZY)
-    private List<WorkOrder> workOrders = new ArrayList<WorkOrder>();
+    private List<WorkOrder> workOrders = new ArrayList<>();
 
     public Long getId() {
         return this.id;

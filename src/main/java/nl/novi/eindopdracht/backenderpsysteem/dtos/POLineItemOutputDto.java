@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
-import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrderLineItem;
+import nl.novi.eindopdracht.backenderpsysteem.models.POLineItem;
 
 import java.time.LocalDate;
 
@@ -11,5 +11,5 @@ public record POLineItemOutputDto(
         int quantity,
         double unitPrice,
         LocalDate deliveryDate,
-        PurchaseOrderLineItem.DeliveryStatus deliveryStatus
+        POLineItem.DeliveryStatus deliveryStatus
 ) {}

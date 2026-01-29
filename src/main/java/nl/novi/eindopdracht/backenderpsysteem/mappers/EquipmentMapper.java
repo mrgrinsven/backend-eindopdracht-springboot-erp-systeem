@@ -23,7 +23,6 @@ public class EquipmentMapper {
                         .stream()
                         .map(WorkOrderMapper::toDto)
                         .toList()
-
         );
     }
 }

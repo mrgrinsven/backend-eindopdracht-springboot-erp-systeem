@@ -1,0 +1,43 @@
+package nl.novi.eindopdracht.backenderpsysteem.controllers;
+
+import jakarta.validation.Valid;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
+import nl.novi.eindopdracht.backenderpsysteem.service.PartService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/parts")
+public class PartController {
+
+    private final PartService service;
+
+    public PartController(PartService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<PartOutputDto> createPart(@Valid @RequestBody PartInputDto partInputDto) {
+        PartOutputDto partOutputDto = service.createPart(partInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + partOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(partOutputDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PartOutputDto>> getAllParts() {
+        return ResponseEntity.ok(service.getAllParts());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<PartOutputDto> getPartById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getPartById(id));
+    }
+}

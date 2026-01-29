@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "purchase_order_line_items")
-public class PurchaseOrderLineItem {
+public class POLineItem {
 
     public enum DeliveryStatus {
         OPEN,
@@ -73,7 +73,15 @@ public class PurchaseOrderLineItem {
         return this.part;
     }
 
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
     public PurchaseOrder getPurchaseOrder() {
         return this.purchaseOrder;
+    }
+
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
     }
 }
