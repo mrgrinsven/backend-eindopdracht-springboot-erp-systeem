@@ -5,11 +5,12 @@ import nl.novi.eindopdracht.backenderpsysteem.models.POLineItem;
 import java.time.LocalDate;
 
 public record POLineItemOutputDto(
+        Long id,
         Long partId,
         String partName,
         String partNumber,
-        int quantity,
-        double unitPrice,
+        Integer quantity,
+        Double unitPrice,
         LocalDate deliveryDate,
         POLineItem.DeliveryStatus deliveryStatus
 ) {}

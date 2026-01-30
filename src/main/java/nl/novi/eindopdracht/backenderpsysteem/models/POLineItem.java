@@ -19,9 +19,12 @@ public class POLineItem {
     @GeneratedValue
     Long id;
 
-    private int quantity;
-    private double unitPrice;
+    private Integer quantity;
+    private Integer receivedQuantity;
+    private Double unitPrice;
     private LocalDate deliveryDate;
+
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
 
@@ -43,6 +46,14 @@ public class POLineItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getReceivedQuantity() {
+        return this.receivedQuantity;
+    }
+
+    public void setReceivedQuantity(Integer receivedQuantity) {
+        this.receivedQuantity = receivedQuantity;
     }
 
     public double getUnitPrice() {

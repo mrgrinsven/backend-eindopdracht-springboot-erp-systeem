@@ -17,6 +17,7 @@ public class POLineItemMapper {
 
     public static POLineItemOutputDto toDto(POLineItem POLineItem) {
         return new POLineItemOutputDto(
+                POLineItem.getId(),
                 POLineItem.getPart().getId(),
                 POLineItem.getPart().getName(),
                 POLineItem.getPart().getPartNumber(),

@@ -40,7 +40,8 @@ public class PurchaseOrderService {
                     POLineItem item = POLineItemMapper.toEntity(itemDto);
 
                     Part part = this.partRepository.findById(itemDto.partId()).orElseThrow(
-                            () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found"));
+                            () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found")
+                    );
 
                     item.setPart(part);
                     item.setDeliveryStatus(POLineItem.DeliveryStatus.OPEN);
