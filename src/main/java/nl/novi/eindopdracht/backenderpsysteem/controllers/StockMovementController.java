@@ -1,17 +1,18 @@
 package nl.novi.eindopdracht.backenderpsysteem.controllers;
 
+import jakarta.validation.Valid;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.StockMovementService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("stockmovements")
+@RequestMapping("/stockmovements")
 public class StockMovementController {
 
     private final StockMovementService service;
@@ -19,6 +20,7 @@ public class StockMovementController {
     public StockMovementController(StockMovementService service) {
         this.service = service;
     }
+
 
     @GetMapping
     public ResponseEntity<List<StockMovementOutputDto>> getAllStockMovements() {
@@ -28,5 +30,45 @@ public class StockMovementController {
     @GetMapping("{id}")
     public ResponseEntity<StockMovementOutputDto> getStockMovement(@PathVariable Long id) {
         return ResponseEntity.ok(this.service.getStockMovementById(id));
+    }
+
+    @PostMapping("/goods-receipt")
+    public ResponseEntity<StockMovementOutputDto> goodsReceipt(@Valid @RequestBody StockMovementInputDto stockMovementInputDto) {
+        StockMovementOutputDto stockMovementOutputDto = this.service.goodsReceipt(stockMovementInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + stockMovementOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(stockMovementOutputDto);
+    }
+
+    @PostMapping("/goods-receipt-reversal")
+    public ResponseEntity<StockMovementOutputDto> goodsReceiptReversal(@Valid @RequestBody StockMovementInputDto stockMovementInputDto) {
+        StockMovementOutputDto stockMovementOutputDto = this.service.goodsReceiptReversal(stockMovementInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + stockMovementOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(stockMovementOutputDto);
+    }
+
+    @PostMapping("/goods-issue")
+    public ResponseEntity<StockMovementOutputDto> goodsIssue(@Valid @RequestBody StockMovementInputDto stockMovementInputDto) {
+        StockMovementOutputDto stockMovementOutputDto = this.service.goodsIssue(stockMovementInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + stockMovementOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(stockMovementOutputDto);
+    }
+
+    @PostMapping("/goods-issue-reversal")
+    public ResponseEntity<StockMovementOutputDto> goodsIssueReversal(@Valid @RequestBody StockMovementInputDto stockMovementInputDto) {
+        StockMovementOutputDto stockMovementOutputDto = this.service.goodsIssueReversal(stockMovementInputDto);
+        URI uri = URI.create(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + stockMovementOutputDto.id()).toUriString());
+
+        return ResponseEntity.created(uri).body(stockMovementOutputDto);
     }
 }

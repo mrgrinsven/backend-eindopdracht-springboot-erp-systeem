@@ -51,6 +51,7 @@ public class WorkOrderService {
                             () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found"));
 
                     item.setPart(part);
+                    item.setStatus(WOLineItem.Status.OPEN);
                     item.setWorkOrder(workOrder);
                     this.woLineItemRepository.save(item);
 

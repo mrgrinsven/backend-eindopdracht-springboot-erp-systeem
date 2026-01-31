@@ -5,11 +5,22 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "work_order_line_items")
 public class WOLineItem {
+
+    public enum Status {
+        OPEN,
+        PARTIAL,
+        CLOSED
+    }
+
     @Id
     @GeneratedValue
     Long id;
 
-    private int quantity;
+    private Integer quantity;
+    private Integer receivedQuantity;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "part_id" )
@@ -23,12 +34,28 @@ public class WOLineItem {
         return this.id;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getReceivedQuantity() {
+        return this.receivedQuantity;
+    }
+
+    public void setReceivedQuantity(Integer receivedQuantity) {
+        this.receivedQuantity = receivedQuantity;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Part getPart() {

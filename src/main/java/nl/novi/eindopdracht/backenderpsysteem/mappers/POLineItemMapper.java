@@ -9,6 +9,7 @@ public class POLineItemMapper {
     public static POLineItem toEntity(POLineItemInputDto poLineItemInputDto) {
         POLineItem poLineItem = new POLineItem();
         poLineItem.setQuantity(poLineItemInputDto.quantity());
+        poLineItem.setReceivedQuantity(0);
         poLineItem.setUnitPrice(poLineItemInputDto.unitPrice());
         poLineItem.setDeliveryDate(poLineItemInputDto.deliveryDate());
 
