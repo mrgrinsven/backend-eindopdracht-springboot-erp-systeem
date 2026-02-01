@@ -1,11 +1,9 @@
 package nl.novi.eindopdracht.backenderpsysteem.service;
 
-import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.exceptions.ResourceNotFoundException;
 import nl.novi.eindopdracht.backenderpsysteem.mappers.PartMapper;
-import nl.novi.eindopdracht.backenderpsysteem.models.Equipment;
 import nl.novi.eindopdracht.backenderpsysteem.models.Part;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PartRepository;
 import org.springframework.stereotype.Service;
@@ -55,6 +53,15 @@ public class PartService {
         part.setReorderPoint(partInputDto.reorderPoint());
         part.setReorderQuantity(partInputDto.reorderQuantity());
 
+        this.partRepository.save(part);
+    }
+
+    public void updateImageById(Long id, byte[] imageBytes) {
+        Part part = this.partRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Part" + id + " not found")
+        );
+
+        part.setImage(imageBytes);
         this.partRepository.save(part);
     }
 }

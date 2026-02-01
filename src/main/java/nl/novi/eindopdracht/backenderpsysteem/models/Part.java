@@ -1,6 +1,7 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Part extends Audit{
     private Double movingAveragePrice;
     private Integer reorderPoint;
     private Integer reorderQuantity;
+
+    @Column(name = "image")
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "work_order_id")
@@ -91,5 +95,13 @@ public class Part extends Audit{
 
     public void setReorderQuantity(Integer reorderQuantity) {
         this.reorderQuantity = reorderQuantity;
+    }
+
+    public byte[] getImage() {
+        return this.image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

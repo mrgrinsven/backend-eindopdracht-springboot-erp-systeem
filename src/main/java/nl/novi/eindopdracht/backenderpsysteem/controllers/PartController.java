@@ -1,14 +1,15 @@
 package nl.novi.eindopdracht.backenderpsysteem.controllers;
 
 import jakarta.validation.Valid;
-import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.PartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -47,5 +48,20 @@ public class PartController {
         this.service.updatePartById(id, partInputDto);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}/image")
+    public ResponseEntity<String> updateImageById(@PathVariable Long id,
+                                              @RequestParam("file") MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please select a file!");
+        }
+
+        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
+            return ResponseEntity.badRequest().body("Please select an image type!");
+        }
+
+        this.service.updateImageById(id, file.getBytes());
+        return ResponseEntity.ok().body("Image saved!");
     }
 }
