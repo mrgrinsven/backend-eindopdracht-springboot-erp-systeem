@@ -40,4 +40,12 @@ public class EquipmentController {
     public ResponseEntity<EquipmentOutputDto> getEquipmentById(@PathVariable Long id) {
         return ResponseEntity.ok(this.service.getEquipmentById(id));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Object> updateEquipmentById ( @PathVariable Long id, @Valid @RequestBody EquipmentInputDto equipmentInputDto ) {
+        this.service.updateEquipmentById(id, equipmentInputDto);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

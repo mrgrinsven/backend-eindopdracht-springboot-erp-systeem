@@ -1,6 +1,7 @@
 package nl.novi.eindopdracht.backenderpsysteem.controllers;
 
 import jakarta.validation.Valid;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.PartService;
@@ -39,5 +40,12 @@ public class PartController {
     @GetMapping("{id}")
     public ResponseEntity<PartOutputDto> getPartById(@PathVariable Long id) {
         return ResponseEntity.ok(this.service.getPartById(id));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Object> updatePartById ( @PathVariable Long id, @Valid @RequestBody PartInputDto partInputDto ) {
+        this.service.updatePartById(id, partInputDto);
+
+        return ResponseEntity.noContent().build();
     }
 }
