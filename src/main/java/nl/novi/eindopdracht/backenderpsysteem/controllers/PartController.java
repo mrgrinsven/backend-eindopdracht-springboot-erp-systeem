@@ -1,14 +1,18 @@
 package nl.novi.eindopdracht.backenderpsysteem.controllers;
 
 import jakarta.validation.Valid;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.ImageDownloadDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.PartService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -43,6 +47,16 @@ public class PartController {
         return ResponseEntity.ok(this.service.getPartById(id));
     }
 
+    @GetMapping("{id}/download")
+    public ResponseEntity<byte[]> getPartImageById(@PathVariable Long id) throws IOException {
+        ImageDownloadDto dto = this.service.getPartImageById(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dto.contentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dto.fileName() + "\"")
+                .body(dto.bytes());
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<Object> updatePartById ( @PathVariable Long id, @Valid @RequestBody PartInputDto partInputDto ) {
         this.service.updatePartById(id, partInputDto);
@@ -51,17 +65,9 @@ public class PartController {
     }
 
     @PutMapping("{id}/image")
-    public ResponseEntity<String> updateImageById(@PathVariable Long id,
-                                              @RequestParam("file") MultipartFile file) throws IOException {
-        if (file == null || file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Please select a file!");
-        }
+    public ResponseEntity<String> updateImageById(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        this.service.updateImageById(id, file);
 
-        if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
-            return ResponseEntity.badRequest().body("Please select an image type!");
-        }
-
-        this.service.updateImageById(id, file.getBytes());
         return ResponseEntity.ok().body("Image saved!");
     }
 }

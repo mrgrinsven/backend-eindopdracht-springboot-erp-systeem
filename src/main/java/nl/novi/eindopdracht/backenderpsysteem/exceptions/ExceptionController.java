@@ -31,4 +31,9 @@ public class ExceptionController {
     public ResponseEntity<String> handleQuantityExceededException(QuantityExceededException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(ImageNotValidException.class)
+    public ResponseEntity<String> handleImageNotValidException(ImageNotValidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
