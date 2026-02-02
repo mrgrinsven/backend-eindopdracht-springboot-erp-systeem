@@ -24,7 +24,7 @@ public class WorkOrder extends Audit {
     @OneToMany(mappedBy = "workOrder")
     private List<StockMovement> movements;
 
-    @OneToMany(mappedBy = "workOrder")
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WOLineItem> items = new ArrayList<>();
 
     public Long getId() {

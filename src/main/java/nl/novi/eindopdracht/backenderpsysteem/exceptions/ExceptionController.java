@@ -36,4 +36,14 @@ public class ExceptionController {
     public ResponseEntity<String> handleImageNotValidException(ImageNotValidException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(DeletionRestrictedException.class)
+    public ResponseEntity<String> handleDeletionRestrictionException(DeletionRestrictedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderLineImmutableException.class)
+    public ResponseEntity<String> handleOrderLineImmutableException(OrderLineImmutableException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.controllers;
 import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.WorkOrderInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.WorkOrderOutputDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.WorkOrderUpdateDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.WorkOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,12 @@ public class WorkOrderController {
     @GetMapping("{id}")
     public ResponseEntity<WorkOrderOutputDto> getWorkOrderById(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.service.getWorkOrderById(id));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Object>  updateWorkOrderById(@PathVariable Long id, @Valid @RequestBody WorkOrderUpdateDto workOrderUpdateDto) {
+        this.service.updateWorkOrderById(id, workOrderUpdateDto);
+
+        return ResponseEntity.ok().build();
     }
 }

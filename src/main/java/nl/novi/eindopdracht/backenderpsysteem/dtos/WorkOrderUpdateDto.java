@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
-public record WorkOrderInputDto(
+public record WorkOrderUpdateDto(
         @NotNull
         @Positive
         Long equipmentId,
@@ -13,5 +13,5 @@ public record WorkOrderInputDto(
         @Positive
         Integer repairTime,
         @NotNull
-        List<WOLineItemInputDto> items
+        List<WOLineItemUpdateDto> items
 ) {}
