@@ -7,6 +7,7 @@ import nl.novi.eindopdracht.backenderpsysteem.mappers.EquipmentMapper;
 import nl.novi.eindopdracht.backenderpsysteem.models.Equipment;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.EquipmentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class EquipmentService {
         this.equipmentRepository = equipmentRepository;
     }
 
+    @Transactional
     public EquipmentOutputDto createEquipment(EquipmentInputDto equipmentInputDto) {
         Equipment equipment = EquipmentMapper.toEntity(equipmentInputDto);
         this.equipmentRepository.save(equipment);
@@ -25,6 +27,7 @@ public class EquipmentService {
         return EquipmentMapper.toDto(equipment);
     }
 
+    @Transactional(readOnly = true)
     public List<EquipmentOutputDto> getAllEquipments() {
         List<Equipment> equipments = this.equipmentRepository.findAll();
 
@@ -34,6 +37,7 @@ public class EquipmentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public EquipmentOutputDto getEquipmentById(Long id) {
         Equipment equipment = this.equipmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));
@@ -41,6 +45,7 @@ public class EquipmentService {
         return EquipmentMapper.toDto(equipment);
     }
 
+    @Transactional
     public void updateEquipmentById(Long id, EquipmentInputDto equipmentInputDto) {
         Equipment equipment = this.equipmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));

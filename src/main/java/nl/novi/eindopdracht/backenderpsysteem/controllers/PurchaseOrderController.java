@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.controllers;
 import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderOutputDto;
+import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderUpdateDto;
 import nl.novi.eindopdracht.backenderpsysteem.service.PurchaseOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,10 @@ public class PurchaseOrderController {
     @GetMapping("{id}")
     public ResponseEntity<PurchaseOrderOutputDto> getPurchaseOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(this.service.getPurchaseOrderById(id));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<PurchaseOrderOutputDto> updatePurchaseOrderById(@PathVariable Long id, @Valid @RequestBody PurchaseOrderUpdateDto purchaseOrderUpdateDto) {
+        return ResponseEntity.ok((this.service.updatePurchaseOrderById(id, purchaseOrderUpdateDto)));
     }
 }

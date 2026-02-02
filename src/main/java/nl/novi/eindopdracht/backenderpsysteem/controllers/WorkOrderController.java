@@ -42,9 +42,7 @@ public class WorkOrderController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Object>  updateWorkOrderById(@PathVariable Long id, @Valid @RequestBody WorkOrderUpdateDto workOrderUpdateDto) {
-        this.service.updateWorkOrderById(id, workOrderUpdateDto);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<WorkOrderOutputDto> updateWorkOrderById(@PathVariable Long id, @Valid @RequestBody WorkOrderUpdateDto workOrderUpdateDto) {
+        return ResponseEntity.ok(this.service.updateWorkOrderById(id, workOrderUpdateDto));
     }
 }

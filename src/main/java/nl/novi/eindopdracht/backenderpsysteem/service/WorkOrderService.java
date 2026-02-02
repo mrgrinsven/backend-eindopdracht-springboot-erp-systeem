@@ -72,6 +72,7 @@ public class WorkOrderService {
         return WorkOrderMapper.toDto(workOrder);
     }
 
+    @Transactional(readOnly = true)
     public List<WorkOrderOutputDto> getAllWorkOrders() {
         List<WorkOrder> workOrders = this.workOrderRepository.findAll();
 
@@ -81,6 +82,7 @@ public class WorkOrderService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public WorkOrderOutputDto getWorkOrderById(Long id) {
         WorkOrder workOrder = this.workOrderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("WorkOrder " + id + " not found"));
@@ -89,14 +91,23 @@ public class WorkOrderService {
     }
 
     @Transactional
-    public void updateWorkOrderById(Long id, WorkOrderUpdateDto workOrderUpdateDto) {
+    public WorkOrderOutputDto updateWorkOrderById(Long id, WorkOrderUpdateDto workOrderUpdateDto) {
         WorkOrder workOrder = this.workOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("WorkOrder " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+
+        if (!workOrder.getStatus()) {
+            throw new OrderLineImmutableException("Work order " + id + " can not be modified order is closed");
+        }
+
         Equipment equipment = this.equipmentRepository.findById(workOrderUpdateDto.equipmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Equipment " + workOrderUpdateDto.equipmentId() + " not found"));
 
-        workOrder.setRepairTime(workOrderUpdateDto.repairTime());
-        workOrder.setEquipment(equipment);
+        if (!workOrderUpdateDto.repairTime().equals(workOrder.getRepairTime())) {
+            workOrder.setRepairTime(workOrderUpdateDto.repairTime());
+        }
+        if (!workOrderUpdateDto.equipmentId().equals(equipment.getId())) {
+            workOrder.setEquipment(equipment);
+        }
 
         Set<Long> woLineItemIds = workOrderUpdateDto
                 .items()
@@ -124,14 +135,10 @@ public class WorkOrderService {
                 WOLineItem lineItem = this.woLineItemRepository.findById(itemDto.id())
                         .orElseThrow(() -> new ResourceNotFoundException("Work order lineItem " + itemDto.id() + " not found"));
 
-                if (lineItem.getStatus() == WOLineItem.Status.CLOSED) {
-                    throw new OrderLineImmutableException("Work order lineItem " + itemDto.id() + " can not be modified, it has CLOSED status");
-                }
-
                 Part part = this.partRepository.findById(itemDto.partId()).orElseThrow(
                         () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found"));
 
-                if (!Objects.equals(part.getId(), itemDto.partId())) {
+                if (!Objects.equals(part.getId(), lineItem.getPart().getId())) {
                     if (lineItem.getStatus() != WOLineItem.Status.OPEN) {
                         throw new OrderLineImmutableException("Work order lineItem " + itemDto.id()
                                 + " can not be modified, part can not be changed if the line has already items received on it");
@@ -147,11 +154,17 @@ public class WorkOrderService {
                     if (newQuantity < minimumQuantity ) {
                         throw new OrderLineImmutableException("Work order lineItem " + itemDto.id()
                                 + " can not be changed if the quantity is less than the received quantity");
+                    } else if (newQuantity == minimumQuantity) {
+                        lineItem.setStatus(WOLineItem.Status.CLOSED);
+                    } else if (minimumQuantity == 0) {
+                        lineItem.setStatus(WOLineItem.Status.OPEN);
+                    } else {
+                        lineItem.setStatus(WOLineItem.Status.PARTIAL);
                     }
                     lineItem.setQuantity(newQuantity);
                 }
 
-
+                this.woLineItemRepository.save(lineItem);
             } else {
                 WOLineItem item = WOLineItemUpdateMapper.toEntity(itemDto);
                 Part part = this.partRepository.findById(itemDto.partId())
@@ -165,5 +178,7 @@ public class WorkOrderService {
         }
 
         this.workOrderRepository.save(workOrder);
+
+        return WorkOrderMapper.toDto(workOrder);
     }
 }

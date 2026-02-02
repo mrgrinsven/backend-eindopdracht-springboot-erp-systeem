@@ -20,7 +20,7 @@ public class PurchaseOrder extends Audit {
     @OneToMany(mappedBy = "purchaseOrder")
     private List<StockMovement> movements;
 
-    @OneToMany(mappedBy = "purchaseOrder",  fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "purchaseOrder",  fetch = FetchType.LAZY,  cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<POLineItem> items = new ArrayList<>();
 
     public Long getId() {

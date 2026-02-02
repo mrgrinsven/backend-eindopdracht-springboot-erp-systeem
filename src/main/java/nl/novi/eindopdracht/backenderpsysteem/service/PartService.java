@@ -9,6 +9,7 @@ import nl.novi.eindopdracht.backenderpsysteem.mappers.PartMapper;
 import nl.novi.eindopdracht.backenderpsysteem.models.Part;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PartRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +25,7 @@ public class PartService {
         this.partRepository = partRepository;
     }
 
+    @Transactional
     public PartOutputDto createPart(PartInputDto partInputDto) {
         Part part = PartMapper.toEntity(partInputDto);
         this.partRepository.save(part);
@@ -31,6 +33,7 @@ public class PartService {
         return PartMapper.toDto(part);
     }
 
+    @Transactional(readOnly = true)
     public List<PartOutputDto> getAllParts() {
         List<Part> parts = this.partRepository.findAll();
 
@@ -40,6 +43,7 @@ public class PartService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public PartOutputDto getPartById(Long id) {
         Part part = this.partRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
@@ -47,6 +51,7 @@ public class PartService {
         return PartMapper.toDto(part);
     }
 
+    @Transactional(readOnly = true)
     public ImageDownloadDto getPartImageById(Long id) throws IOException {
         Part part = this.partRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
@@ -68,6 +73,7 @@ public class PartService {
         return new ImageDownloadDto(image, fileName, mime);
     }
 
+    @Transactional
     public void updatePartById(Long id, PartInputDto partInputDto) {
         Part part = this.partRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
@@ -81,6 +87,7 @@ public class PartService {
         this.partRepository.save(part);
     }
 
+    @Transactional
     public void updateImageById(Long id, MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new ImageNotValidException("Please select a file!");

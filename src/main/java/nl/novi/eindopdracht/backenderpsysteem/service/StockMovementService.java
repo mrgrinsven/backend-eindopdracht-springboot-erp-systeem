@@ -262,6 +262,7 @@ public class StockMovementService {
         return StockMovementMapper.toDto(stockMovement);
     }
 
+    @Transactional(readOnly = true)
     public List<StockMovementOutputDto> getAllStockMovements() {
         List<StockMovement> stockMovements = this.stockMovementRepository.findAll();
 
@@ -271,6 +272,7 @@ public class StockMovementService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public StockMovementOutputDto getStockMovementById(Long id) {
         StockMovement stockMovement = this.stockMovementRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("StockMovement " + id + " not found"));
