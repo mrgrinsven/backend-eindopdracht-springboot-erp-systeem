@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.service;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.*;
 import nl.novi.eindopdracht.backenderpsysteem.exceptions.DeletionRestrictedException;
 import nl.novi.eindopdracht.backenderpsysteem.exceptions.OrderLineImmutableException;
+import nl.novi.eindopdracht.backenderpsysteem.exceptions.OrderStateConflictException;
 import nl.novi.eindopdracht.backenderpsysteem.exceptions.ResourceNotFoundException;
 import nl.novi.eindopdracht.backenderpsysteem.mappers.WOLineItemMapper;
 import nl.novi.eindopdracht.backenderpsysteem.mappers.WOLineItemUpdateMapper;
@@ -180,5 +181,78 @@ public class WorkOrderService {
         this.workOrderRepository.save(workOrder);
 
         return WorkOrderMapper.toDto(workOrder);
+    }
+
+    @Transactional
+    public void closeWorkOrderById(Long id) {
+        WorkOrder workOrder = this.workOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+
+        if (!workOrder.getStatus()) {
+            throw new OrderStateConflictException("Work order " + id + " already closed");
+        }
+
+        WOLineItem.Status allowedStatus = WOLineItem.Status.CLOSED;
+        boolean workOrderCompleted = workOrder.getItems()
+                .stream()
+                .allMatch(item -> allowedStatus == item.getStatus());
+
+        if (!workOrderCompleted) {
+            throw new OrderStateConflictException("Work order " + id + " has items that need to be closed");
+        }
+
+        Equipment equipment = this.equipmentRepository.findById(workOrder.getEquipment().getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Equipment " + workOrder.getEquipment().getId() + " not found"));
+
+        if (workOrder.getTotalCostAtClosure() == 0.0) {
+            double newMaintenanceCost = workOrder.getItems()
+                    .stream()
+                    .mapToDouble(item -> {
+                        double price = item.getPart().getMovingAveragePrice();
+                        return item.getQuantity() * price;
+                    })
+                    .sum();
+            workOrder.setTotalCostAtClosure(newMaintenanceCost);
+        }
+
+        double costToAdd = workOrder.getTotalCostAtClosure();
+        double currentTotalMaintenanceCost = equipment.getTotalMaintenanceCost();
+        equipment.setTotalMaintenanceCost(currentTotalMaintenanceCost +  costToAdd);
+
+        int newMaintenanceTime = workOrder.getRepairTime();
+        int currentTotalMaintenanceTime = equipment.getTotalMaintenanceTime();
+        equipment.setTotalMaintenanceTime(newMaintenanceTime + currentTotalMaintenanceTime);
+
+        workOrder.setStatus(false);
+
+        this.equipmentRepository.save(equipment);
+        this.workOrderRepository.save(workOrder);
+    }
+
+    @Transactional
+    public void openWorkOrderById(Long id) {
+        WorkOrder workOrder = this.workOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+
+        if (workOrder.getStatus() == true) {
+            throw new OrderStateConflictException("Work order " + id + " already open");
+        }
+
+        Equipment equipment = this.equipmentRepository.findById(workOrder.getEquipment().getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Equipment " + workOrder.getEquipment().getId() + " not found"));
+
+        Double amountToRemove = workOrder.getTotalCostAtClosure();
+        Double currentTotalMaintenanceCost = equipment.getTotalMaintenanceCost();
+        equipment.setTotalMaintenanceCost(currentTotalMaintenanceCost - amountToRemove);
+
+        int timeToRemove = workOrder.getRepairTime();
+        int currentTotalMaintenanceTime = equipment.getTotalMaintenanceTime();
+        equipment.setTotalMaintenanceTime(currentTotalMaintenanceTime - timeToRemove);
+
+        workOrder.setTotalCostAtClosure(0.0);
+        workOrder.setStatus(true);
+
+        this.equipmentRepository.save(equipment);
+        this.workOrderRepository.save(workOrder);
     }
 }

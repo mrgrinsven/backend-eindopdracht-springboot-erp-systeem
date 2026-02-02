@@ -46,4 +46,9 @@ public class ExceptionController {
     public ResponseEntity<String> handleOrderLineImmutableException(OrderLineImmutableException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(OrderStateConflictException.class)
+    public ResponseEntity<String> handleOrderStateConflictException(OrderStateConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

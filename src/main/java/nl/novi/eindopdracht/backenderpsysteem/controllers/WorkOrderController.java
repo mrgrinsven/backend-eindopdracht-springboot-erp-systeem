@@ -45,4 +45,18 @@ public class WorkOrderController {
     public ResponseEntity<WorkOrderOutputDto> updateWorkOrderById(@PathVariable Long id, @Valid @RequestBody WorkOrderUpdateDto workOrderUpdateDto) {
         return ResponseEntity.ok(this.service.updateWorkOrderById(id, workOrderUpdateDto));
     }
+
+    @PutMapping("{id}/close")
+    public ResponseEntity<Object> closeWorkOrderById(@PathVariable Long id) {
+        this.service.closeWorkOrderById(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{id}/open")
+    public ResponseEntity<Object> openWorkOrderById(@PathVariable Long id) {
+        this.service.openWorkOrderById(id);
+
+        return ResponseEntity.ok().build();
+    }
 }

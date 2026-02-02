@@ -8,6 +8,7 @@ public class WorkOrderMapper {
     public static WorkOrder toEntity(WorkOrderInputDto workOrderInputDto) {
         WorkOrder workOrder = new WorkOrder();
         workOrder.setRepairTime(workOrderInputDto.repairTime());
+        workOrder.setTotalCostAtClosure(0.0);
 
         return workOrder;
     }

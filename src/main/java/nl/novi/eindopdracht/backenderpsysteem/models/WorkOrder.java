@@ -15,7 +15,7 @@ public class WorkOrder extends Audit {
 
     private Integer repairTime;
     private Boolean status;
-
+    private Double totalCostAtClosure;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipment_id", nullable = false)
@@ -45,6 +45,14 @@ public class WorkOrder extends Audit {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Double getTotalCostAtClosure() {
+        return this.totalCostAtClosure;
+    }
+
+    public void setTotalCostAtClosure(Double totalCostAtClosure) {
+        this.totalCostAtClosure = totalCostAtClosure;
     }
 
     public Equipment getEquipment() {
