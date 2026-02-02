@@ -41,17 +41,15 @@ public class PartService {
     }
 
     public PartOutputDto getPartById(Long id) {
-        Part part = this.partRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Part " + id + " not found")
-        );
+        Part part = this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
 
         return PartMapper.toDto(part);
     }
 
     public ImageDownloadDto getPartImageById(Long id) throws IOException {
-        Part part = this.partRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Part " + id + " not found")
-        );
+        Part part = this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
 
         byte[] image = part.getImage();
         if (image == null) {
@@ -71,9 +69,8 @@ public class PartService {
     }
 
     public void updatePartById(Long id, PartInputDto partInputDto) {
-        Part part = this.partRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Part" + id + " not found")
-        );
+        Part part = this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
 
         part.setName(partInputDto.name());
         part.setPartNumber(partInputDto.partNumber());
@@ -93,9 +90,8 @@ public class PartService {
             throw new ImageNotValidException("Please select an image type!");
         }
 
-        Part part = this.partRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Part" + id + " not found")
-        );
+        Part part = this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
 
         part.setImage(file.getBytes());
         this.partRepository.save(part);

@@ -20,22 +20,19 @@ public class StockMovementService {
     private final PartRepository partRepository;
     private final POLineItemRepository poLineItemRepository;
     private final WOLineItemRepository woLineItemRepository;
-    private final EquipmentRepository equipmentRepository;
 
     public StockMovementService(StockMovementRepository stockMovementRepository,
                                 PurchaseOrderRepository purchaseOrderRepository,
                                 WorkOrderRepository workOrderRepository,
                                 PartRepository partRepository,
                                 POLineItemRepository poLineItemRepository,
-                                WOLineItemRepository woLineItemRepository,
-                                EquipmentRepository equipmentRepository) {
+                                WOLineItemRepository woLineItemRepository) {
         this.stockMovementRepository = stockMovementRepository;
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.workOrderRepository = workOrderRepository;
         this.partRepository = partRepository;
         this.poLineItemRepository = poLineItemRepository;
         this.woLineItemRepository = woLineItemRepository;
-        this.equipmentRepository = equipmentRepository;
     }
 
     @Transactional
@@ -43,9 +40,9 @@ public class StockMovementService {
         StockMovement stockMovement = StockMovementMapper.toEntity(stockMovementInputDto);
         stockMovement.setStockMovementType(StockMovement.StockMovementType.GOODS_RECEIPT);
 
-        POLineItem poLineItem = this.poLineItemRepository.findById(stockMovementInputDto.lineItemId()).orElseThrow(
-                () -> new ResourceNotFoundException("Purchase Order Line Item" + stockMovementInputDto.lineItemId() + " not found")
-        );
+        POLineItem poLineItem = this.poLineItemRepository.findById(stockMovementInputDto.lineItemId())
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase Order Line Item "
+                        + stockMovementInputDto.lineItemId() + " not found"));
 
         int quantityOrdered = poLineItem.getQuantity();
         int quantityAlreadyReceived = poLineItem.getReceivedQuantity();
@@ -66,9 +63,9 @@ public class StockMovementService {
         }
         this.poLineItemRepository.save(poLineItem);
 
-        PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(poLineItem.getPurchaseOrder().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Purchase Order" + poLineItem.getPurchaseOrder().getId() + " not found")
-        );
+        PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(poLineItem.getPurchaseOrder().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase Order "
+                        + poLineItem.getPurchaseOrder().getId() + " not found"));
         stockMovement.setPurchaseOrder(purchaseOrder);
 
         List<POLineItem.DeliveryStatus> allowedStatuses = List.of(POLineItem.DeliveryStatus.CLOSED, POLineItem.DeliveryStatus.CANCELED);
@@ -82,9 +79,8 @@ public class StockMovementService {
             this.purchaseOrderRepository.save(purchaseOrder);
         }
 
-        Part part = this.partRepository.findById(poLineItem.getPart().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Part" + poLineItem.getPart().getId() + " not found")
-        );
+        Part part = this.partRepository.findById(poLineItem.getPart().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + poLineItem.getPart().getId() + " not found"));
 
         double newMovingAveragePrice;
         if (part.getMovingAveragePrice() == null) {
@@ -115,7 +111,7 @@ public class StockMovementService {
         stockMovement.setStockMovementType(StockMovement.StockMovementType.GOODS_RECEIPT_REVERSAL);
 
         POLineItem poLineItem = this.poLineItemRepository.findById(stockMovementInputDto.lineItemId()).orElseThrow(
-                () -> new ResourceNotFoundException("Purchase Order Line Item" + stockMovementInputDto.lineItemId() + " not found")
+                () -> new ResourceNotFoundException("Purchase Order Line Item " + stockMovementInputDto.lineItemId() + " not found")
         );
 
         int quantityAllowed = poLineItem.getReceivedQuantity();
@@ -136,7 +132,7 @@ public class StockMovementService {
         this.poLineItemRepository.save(poLineItem);
 
         PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(poLineItem.getPurchaseOrder().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Purchase Order" + poLineItem.getPurchaseOrder().getId() + " not found")
+                () -> new ResourceNotFoundException("Purchase Order " + poLineItem.getPurchaseOrder().getId() + " not found")
         );
         stockMovement.setPurchaseOrder(purchaseOrder);
 
@@ -146,7 +142,7 @@ public class StockMovementService {
         }
 
         Part part = this.partRepository.findById(poLineItem.getPart().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Part" + poLineItem.getPart().getId() + " not found")
+                () -> new ResourceNotFoundException("Part " + poLineItem.getPart().getId() + " not found")
         );
 
         double newMovingAveragePrice;
@@ -173,13 +169,12 @@ public class StockMovementService {
         StockMovement stockMovement = StockMovementMapper.toEntity(stockMovementInputDto);
         stockMovement.setStockMovementType(StockMovement.StockMovementType.GOODS_ISSUE);
 
-        WOLineItem woLineItem = this.woLineItemRepository.findById(stockMovementInputDto.lineItemId()).orElseThrow(
-                () -> new ResourceNotFoundException("Work Order Line Item" + stockMovementInputDto.lineItemId() + " not found")
-        );
+        WOLineItem woLineItem = this.woLineItemRepository.findById(stockMovementInputDto.lineItemId())
+                .orElseThrow(() -> new ResourceNotFoundException("Work Order Line Item "
+                        + stockMovementInputDto.lineItemId() + " not found"));
 
-        Part part = this.partRepository.findById(woLineItem.getPart().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Part" + woLineItem.getPart().getId() + " not found")
-        );
+        Part part = this.partRepository.findById(woLineItem.getPart().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + woLineItem.getPart().getId() + " not found"));
 
         int quantityOrdered = woLineItem.getQuantity();
         int quantityAlreadyReceived = woLineItem.getReceivedQuantity();
@@ -208,9 +203,9 @@ public class StockMovementService {
 
         stockMovement.setPart(part);
 
-        WorkOrder workOrder = this.workOrderRepository.findById(woLineItem.getWorkOrder().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Work Order" + woLineItem.getWorkOrder().getId() + " not found")
-        );
+        WorkOrder workOrder = this.workOrderRepository.findById(woLineItem.getWorkOrder().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Work Order "
+                        + woLineItem.getWorkOrder().getId() + " not found"));
         stockMovement.setWorkOrder(workOrder);
 
         this.stockMovementRepository.save(stockMovement);
@@ -277,9 +272,8 @@ public class StockMovementService {
     }
 
     public StockMovementOutputDto getStockMovementById(Long id) {
-        StockMovement stockMovement = this.stockMovementRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("StockMovement" + id + " not found")
-        );
+        StockMovement stockMovement = this.stockMovementRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("StockMovement " + id + " not found"));
 
         return StockMovementMapper.toDto(stockMovement);
     }

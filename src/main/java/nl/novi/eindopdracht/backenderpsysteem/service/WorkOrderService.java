@@ -41,8 +41,9 @@ public class WorkOrderService {
     public WorkOrderOutputDto createWorkOrder(WorkOrderInputDto workOrderInputDto) {
         WorkOrder workOrder = WorkOrderMapper.toEntity(workOrderInputDto);
 
-        Equipment equipment = this.equipmentRepository.findById(workOrderInputDto.equipmentId()).orElseThrow(
-                () -> new ResourceNotFoundException("Equipment " + workOrderInputDto.equipmentId() + " not found"));
+        Equipment equipment = this.equipmentRepository.findById(workOrderInputDto.equipmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Equipment "
+                        + workOrderInputDto.equipmentId() + " not found"));
         workOrder.setEquipment(equipment);
         workOrder.setStatus(true);
 
@@ -81,9 +82,8 @@ public class WorkOrderService {
     }
 
     public WorkOrderOutputDto getWorkOrderById(Long id) {
-        WorkOrder workOrder = this.workOrderRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("WorkOrder " + id + " not found")
-        );
+        WorkOrder workOrder = this.workOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("WorkOrder " + id + " not found"));
 
         return WorkOrderMapper.toDto(workOrder);
     }
