@@ -14,7 +14,7 @@ public class WorkOrder extends Audit {
     Long id;
 
     private Integer repairTime;
-    private Boolean status;
+    private Boolean isOpen;
     private Double totalCostAtClosure;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,12 +39,12 @@ public class WorkOrder extends Audit {
         this.repairTime = repairTime;
     }
 
-    public Boolean getStatus() {
-        return this.status;
+    public Boolean getIsOpen() {
+        return this.isOpen;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setIsOpen(Boolean status) {
+        this.isOpen = status;
     }
 
     public Double getTotalCostAtClosure() {

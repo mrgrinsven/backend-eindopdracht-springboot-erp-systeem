@@ -17,7 +17,7 @@ public class WorkOrderMapper {
                 workOrder.getId(),
                 workOrder.getEquipment().getId(),
                 workOrder.getRepairTime(),
-                workOrder.getStatus(),
+                workOrder.getIsOpen(),
                 workOrder.getCreationDate(),
                 workOrder.getCreatedBy(),
                 workOrder.getModifiedBy(),

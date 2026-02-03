@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,12 @@ public class StockMovementController {
 
 
     @GetMapping
-    public ResponseEntity<List<StockMovementOutputDto>> getAllStockMovements() {
-        return ResponseEntity.ok(this.service.getAllStockMovements());
+    public ResponseEntity<List<StockMovementOutputDto>> getAllStockMovements(
+            @RequestParam(required = false) Long partId,
+            @RequestParam(required = false) Long workOrderId,
+            @RequestParam(required = false) Long purchaseOrderId,
+            @RequestParam(required = false) LocalDateTime date) {
+        return ResponseEntity.ok(this.service.getAllStockMovements(partId, workOrderId, purchaseOrderId, date));
     }
 
     @GetMapping("{id}")

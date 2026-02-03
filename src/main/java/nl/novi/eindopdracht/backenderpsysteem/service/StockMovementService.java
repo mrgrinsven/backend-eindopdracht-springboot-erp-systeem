@@ -7,9 +7,11 @@ import nl.novi.eindopdracht.backenderpsysteem.exceptions.ResourceNotFoundExcepti
 import nl.novi.eindopdracht.backenderpsysteem.mappers.StockMovementMapper;
 import nl.novi.eindopdracht.backenderpsysteem.models.*;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -75,7 +77,7 @@ public class StockMovementService {
                 .allMatch(item -> allowedStatuses.contains(item.getDeliveryStatus()));
 
         if (purchaseOrderCompleted) {
-            purchaseOrder.setOrderStatus(false);
+            purchaseOrder.setIsOpen(false);
             this.purchaseOrderRepository.save(purchaseOrder);
         }
 
@@ -136,8 +138,8 @@ public class StockMovementService {
         );
         stockMovement.setPurchaseOrder(purchaseOrder);
 
-        if (purchaseOrder.getOrderStatus() == false) {
-            purchaseOrder.setOrderStatus(true);
+        if (purchaseOrder.getIsOpen() == false) {
+            purchaseOrder.setIsOpen(true);
             this.purchaseOrderRepository.save(purchaseOrder);
         }
 
@@ -263,10 +265,23 @@ public class StockMovementService {
     }
 
     @Transactional(readOnly = true)
-    public List<StockMovementOutputDto> getAllStockMovements() {
-        List<StockMovement> stockMovements = this.stockMovementRepository.findAll();
+    public List<StockMovementOutputDto> getAllStockMovements(Long partId, Long workOrderId, Long purchaseOrderId, LocalDateTime date) {
+        Specification<StockMovement> spec = (root, query, cb) -> cb.conjunction();
 
-        return stockMovements
+        if (partId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("part").get("id"), partId));
+        }
+        if (workOrderId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("workOrder").get("id"), workOrderId));
+        }
+        if (purchaseOrderId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("purchaseOrder").get("id"), purchaseOrderId));
+        }
+        if (date != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("creationDate"), date));
+        }
+
+        return this.stockMovementRepository.findAll(spec)
                 .stream()
                 .map(StockMovementMapper::toDto)
                 .toList();

@@ -15,7 +15,7 @@ public class PurchaseOrder extends Audit {
 
     private String vendorName;
     private Double totalPrice;
-    private Boolean orderStatus;
+    private Boolean isOpen;
 
     @OneToMany(mappedBy = "purchaseOrder")
     private List<StockMovement> movements;
@@ -43,12 +43,12 @@ public class PurchaseOrder extends Audit {
         this.totalPrice = totalPrice;
     }
 
-    public Boolean getOrderStatus() {
-        return this.orderStatus;
+    public Boolean getIsOpen() {
+        return this.isOpen;
     }
 
-    public void setOrderStatus(Boolean orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setIsOpen(Boolean orderStatus) {
+        this.isOpen = orderStatus;
     }
 
     public List<POLineItem> getItems() {

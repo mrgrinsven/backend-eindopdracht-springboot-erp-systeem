@@ -32,8 +32,8 @@ public class WorkOrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WorkOrderOutputDto>> getAllWorkOrders() {
-        return ResponseEntity.ok().body(this.service.getAllWorkOrders());
+    public ResponseEntity<List<WorkOrderOutputDto>> getAllWorkOrders(@RequestParam(required = false) Boolean isOpen) {
+        return ResponseEntity.ok().body(this.service.getAllWorkOrders(isOpen));
     }
 
     @GetMapping("{id}")

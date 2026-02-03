@@ -32,8 +32,10 @@ public class PurchaseOrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PurchaseOrderOutputDto>> getAllPurchaseOrders() {
-        return ResponseEntity.ok(this.service.getAllPurchaseOrders());
+    public ResponseEntity<List<PurchaseOrderOutputDto>> getAllPurchaseOrders(
+            @RequestParam(required = false) Boolean isOpen,
+            @RequestParam(required = false) String vendorName) {
+        return ResponseEntity.ok(this.service.getAllPurchaseOrders(isOpen, vendorName));
     }
 
     @GetMapping("{id}")

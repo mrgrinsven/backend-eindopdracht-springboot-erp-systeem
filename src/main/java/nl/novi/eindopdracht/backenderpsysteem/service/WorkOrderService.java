@@ -46,7 +46,7 @@ public class WorkOrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Equipment "
                         + workOrderInputDto.equipmentId() + " not found"));
         workOrder.setEquipment(equipment);
-        workOrder.setStatus(true);
+        workOrder.setIsOpen(true);
 
         List<WOLineItem> items = workOrderInputDto
                 .items()
@@ -74,8 +74,14 @@ public class WorkOrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<WorkOrderOutputDto> getAllWorkOrders() {
-        List<WorkOrder> workOrders = this.workOrderRepository.findAll();
+    public List<WorkOrderOutputDto> getAllWorkOrders(Boolean isOpen) {
+        List<WorkOrder> workOrders;
+
+        if (isOpen != null) {
+            workOrders = this.workOrderRepository.findByIsOpen(isOpen);
+        } else {
+            workOrders = this.workOrderRepository.findAll();
+        }
 
         return workOrders
                 .stream()
@@ -96,7 +102,7 @@ public class WorkOrderService {
         WorkOrder workOrder = this.workOrderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
 
-        if (!workOrder.getStatus()) {
+        if (!workOrder.getIsOpen()) {
             throw new OrderLineImmutableException("Work order " + id + " can not be modified order is closed");
         }
 
@@ -188,7 +194,7 @@ public class WorkOrderService {
         WorkOrder workOrder = this.workOrderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
 
-        if (!workOrder.getStatus()) {
+        if (!workOrder.getIsOpen()) {
             throw new OrderStateConflictException("Work order " + id + " already closed");
         }
 
@@ -223,7 +229,7 @@ public class WorkOrderService {
         int currentTotalMaintenanceTime = equipment.getTotalMaintenanceTime();
         equipment.setTotalMaintenanceTime(newMaintenanceTime + currentTotalMaintenanceTime);
 
-        workOrder.setStatus(false);
+        workOrder.setIsOpen(false);
 
         this.equipmentRepository.save(equipment);
         this.workOrderRepository.save(workOrder);
@@ -234,7 +240,7 @@ public class WorkOrderService {
         WorkOrder workOrder = this.workOrderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
 
-        if (workOrder.getStatus() == true) {
+        if (workOrder.getIsOpen() == true) {
             throw new OrderStateConflictException("Work order " + id + " already open");
         }
 
@@ -250,7 +256,7 @@ public class WorkOrderService {
         equipment.setTotalMaintenanceTime(currentTotalMaintenanceTime - timeToRemove);
 
         workOrder.setTotalCostAtClosure(0.0);
-        workOrder.setStatus(true);
+        workOrder.setIsOpen(true);
 
         this.equipmentRepository.save(equipment);
         this.workOrderRepository.save(workOrder);

@@ -10,7 +10,6 @@ import nl.novi.eindopdracht.backenderpsysteem.mappers.PurchaseOrderMapper;
 import nl.novi.eindopdracht.backenderpsysteem.models.POLineItem;
 import nl.novi.eindopdracht.backenderpsysteem.models.Part;
 import nl.novi.eindopdracht.backenderpsysteem.models.PurchaseOrder;
-import nl.novi.eindopdracht.backenderpsysteem.models.WOLineItem;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.POLineItemRepository;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PartRepository;
 import nl.novi.eindopdracht.backenderpsysteem.repositories.PurchaseOrderRepository;
@@ -37,7 +36,7 @@ public class PurchaseOrderService {
     @Transactional
     public PurchaseOrderOutputDto createPurchaseOrder(PurchaseOrderInputDto purchaseOrderInputDto) {
         PurchaseOrder purchaseOrder = PurchaseOrderMapper.toEntity(purchaseOrderInputDto);
-        purchaseOrder.setOrderStatus(true);
+        purchaseOrder.setIsOpen(true);
 
         List<POLineItem> items = purchaseOrderInputDto
                 .items()
@@ -68,8 +67,17 @@ public class PurchaseOrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<PurchaseOrderOutputDto> getAllPurchaseOrders() {
-        List<PurchaseOrder> purchaseOrders = this.purchaseOrderRepository.findAll();
+    public List<PurchaseOrderOutputDto> getAllPurchaseOrders(Boolean isOpen, String vendorName) {
+        List<PurchaseOrder> purchaseOrders;
+        if (isOpen != null && vendorName != null) {
+            purchaseOrders = this.purchaseOrderRepository.findByIsOpenAndVendorNameContainingIgnoreCase(isOpen, vendorName);
+        } else if (isOpen != null) {
+            purchaseOrders = this.purchaseOrderRepository.findByIsOpen(isOpen);
+        } else if (vendorName != null) {
+            purchaseOrders = this.purchaseOrderRepository.findByVendorNameContainingIgnoreCase(vendorName);
+        } else {
+            purchaseOrders = this.purchaseOrderRepository.findAll();
+        }
 
         return purchaseOrders
                 .stream()
@@ -180,8 +188,8 @@ public class PurchaseOrderService {
                 .allMatch(item -> allowedStatuses.contains(item.getDeliveryStatus()));
 
         if (purchaseOrderCompleted) {
-            purchaseOrder.setOrderStatus(false);
-        } else {purchaseOrder.setOrderStatus(true);}
+            purchaseOrder.setIsOpen(false);
+        } else {purchaseOrder.setIsOpen(true);}
 
         this.purchaseOrderRepository.save(purchaseOrder);
 
