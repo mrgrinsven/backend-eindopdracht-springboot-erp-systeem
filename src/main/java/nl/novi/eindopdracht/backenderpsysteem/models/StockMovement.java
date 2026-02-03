@@ -6,17 +6,42 @@ import jakarta.persistence.*;
 @Table(name = "stock_movements")
 public class StockMovement extends Audit {
 
-    public enum OrderType {
-        WORK_ORDER,
-        PURCHASE_ORDER
+    public enum StockMovementType {
+        GOODS_RECEIPT(101, "Goods Receipt", "PURCHASE_ORDER"),
+        GOODS_RECEIPT_REVERSAL(102, "Goods Receipt Reversal", "PURCHASE_ORDER"),
+
+        GOODS_ISSUE(201, "Work Order Issue", "WORK_ORDER"),
+        GOODS_ISSUE_REVERSAL(202, "Work Order Reversal", "WORK_ORDER");
+
+        private final int stockMovementCode;
+        private final String description;
+        private final String orderType;
+
+        StockMovementType(int stockMovementCode, String description, String orderType) {
+            this.stockMovementCode = stockMovementCode;
+            this.description = description;
+            this.orderType = orderType;
+        }
+        public int getStockMovementCode() {
+            return this.stockMovementCode;
+        }
+        public String getDescription() {
+            return this.description;
+        }
+        public String getOrderType() {
+            return this.orderType;
+        }
     }
 
     @Id
     @GeneratedValue
     Long id;
+
     private Integer quantity;
-    private Integer type;
-    private OrderType orderType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "movement_type", nullable = false)
+    private StockMovementType stockMovementType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_order_id")
@@ -27,7 +52,7 @@ public class StockMovement extends Audit {
     private WorkOrder workOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "part_id")
+    @JoinColumn(name = "part_id", nullable = false)
     private Part part;
 
     public Long getId() {
@@ -42,31 +67,35 @@ public class StockMovement extends Audit {
         this.quantity = quantity;
     }
 
-    public Integer getType() {
-        return this.type;
+    public StockMovementType getStockMovementType() {
+        return stockMovementType;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public OrderType getOrderType() {
-        return this.orderType;
-    }
-
-    public void setOrderType(OrderType orderType) {
-        this.orderType = orderType;
+    public void setStockMovementType(StockMovementType stockMovementType) {
+        this.stockMovementType = stockMovementType;
     }
 
     public PurchaseOrder getPurchaseOrder() {
         return this.purchaseOrder;
     }
 
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
+    }
+
     public WorkOrder getWorkOrder() {
         return this.workOrder;
     }
 
+    public void setWorkOrder(WorkOrder workOrder) {
+        this.workOrder = workOrder;
+    }
+
     public Part getPart() {
         return this.part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
     }
 }

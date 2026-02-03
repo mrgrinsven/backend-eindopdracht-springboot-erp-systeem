@@ -1,6 +1,13 @@
 package nl.novi.eindopdracht.backenderpsysteem.dtos;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public record StockMovementInputDto(
-        Integer quantity,
-        Integer type
+        @NotNull
+        @Positive
+        Long lineItemId,
+        @NotNull
+        @Positive
+        Integer quantity
 ) {}

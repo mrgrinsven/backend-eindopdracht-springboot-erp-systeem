@@ -3,15 +3,13 @@ package nl.novi.eindopdracht.backenderpsysteem.dtos;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-import java.util.List;
-
-public record WorkOrderInputDto(
+public record WOLineItemUpdateDto(
+        @Positive
+        Long id,
         @NotNull
         @Positive
-        Long equipmentId,
+        Long partId,
         @NotNull
         @Positive
-        Integer repairTime,
-        @NotNull
-        List<WOLineItemInputDto> items
+        int quantity
 ) {}

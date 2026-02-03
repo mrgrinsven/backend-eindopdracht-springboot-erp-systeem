@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record PurchaseOrderInputDto(
+public record PurchaseOrderUpdateDto(
         @NotBlank
         String vendorName,
         @NotNull
-        List<POLineItemInputDto> items
+        List<POLineItemUpdateDto> items
 ) {}

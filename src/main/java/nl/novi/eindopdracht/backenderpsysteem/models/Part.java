@@ -1,8 +1,8 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,22 +21,21 @@ public class Part extends Audit{
     private Integer reorderPoint;
     private Integer reorderQuantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchase_order_id")
-    private PurchaseOrder purchaseOrder;
+    @Column(name = "image")
+    private byte[] image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
-    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
-    private List<StockMovement> movements = new ArrayList<>();
+    @OneToMany(mappedBy = "part")
+    private List<StockMovement> movements;
 
-    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
-    private List<PurchaseOrderLineItem> purchaseOrderLineItems = new ArrayList<>();
+    @OneToMany(mappedBy = "part")
+    private List<POLineItem> POLineItems;
 
-    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
-    private List<WorkOrderLineItem> workOrderLineItems = new ArrayList<>();
+    @OneToMany(mappedBy = "part")
+    private List<WOLineItem> WOLineItems;
 
     public Long getId() {
         return this.id;
@@ -96,5 +95,13 @@ public class Part extends Audit{
 
     public void setReorderQuantity(Integer reorderQuantity) {
         this.reorderQuantity = reorderQuantity;
+    }
+
+    public byte[] getImage() {
+        return this.image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

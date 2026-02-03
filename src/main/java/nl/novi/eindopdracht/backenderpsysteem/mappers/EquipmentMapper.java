@@ -9,6 +9,8 @@ public class EquipmentMapper {
     public static Equipment toEntity(EquipmentInputDto equipmentInputDto) {
         Equipment equipment = new Equipment();
         equipment.setName(equipmentInputDto.name());
+        equipment.setTotalMaintenanceCost(0.0);
+        equipment.setTotalMaintenanceTime(0);
         return equipment;
     }
 
@@ -23,7 +25,6 @@ public class EquipmentMapper {
                         .stream()
                         .map(WorkOrderMapper::toDto)
                         .toList()
-
         );
     }
 }

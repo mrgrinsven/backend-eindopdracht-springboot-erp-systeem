@@ -13,6 +13,7 @@ public class PartMapper {
         part.setUnitPrice(partInputDto.unitPrice());
         part.setReorderPoint(partInputDto.reorderPoint());
         part.setReorderQuantity(partInputDto.reorderQuantity());
+        part.setStockQuantity(0);
 
         return part;
     }

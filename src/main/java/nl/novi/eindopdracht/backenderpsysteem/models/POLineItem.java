@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "purchase_order_line_items")
-public class PurchaseOrderLineItem {
+public class POLineItem {
 
     public enum DeliveryStatus {
         OPEN,
@@ -19,9 +19,12 @@ public class PurchaseOrderLineItem {
     @GeneratedValue
     Long id;
 
-    private int quantity;
-    private double unitPrice;
+    private Integer quantity;
+    private Integer receivedQuantity;
+    private Double unitPrice;
     private LocalDate deliveryDate;
+
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
 
@@ -43,6 +46,14 @@ public class PurchaseOrderLineItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getReceivedQuantity() {
+        return this.receivedQuantity;
+    }
+
+    public void setReceivedQuantity(Integer receivedQuantity) {
+        this.receivedQuantity = receivedQuantity;
     }
 
     public double getUnitPrice() {
@@ -73,7 +84,15 @@ public class PurchaseOrderLineItem {
         return this.part;
     }
 
+    public void setPart(Part part) {
+        this.part = part;
+    }
+
     public PurchaseOrder getPurchaseOrder() {
         return this.purchaseOrder;
+    }
+
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
     }
 }

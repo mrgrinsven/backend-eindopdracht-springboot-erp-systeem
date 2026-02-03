@@ -26,4 +26,29 @@ public class ExceptionController {
     public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(QuantityExceededException.class)
+    public ResponseEntity<String> handleQuantityExceededException(QuantityExceededException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ImageNotValidException.class)
+    public ResponseEntity<String> handleImageNotValidException(ImageNotValidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DeletionRestrictedException.class)
+    public ResponseEntity<String> handleDeletionRestrictionException(DeletionRestrictedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderLineImmutableException.class)
+    public ResponseEntity<String> handleOrderLineImmutableException(OrderLineImmutableException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(OrderStateConflictException.class)
+    public ResponseEntity<String> handleOrderStateConflictException(OrderStateConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

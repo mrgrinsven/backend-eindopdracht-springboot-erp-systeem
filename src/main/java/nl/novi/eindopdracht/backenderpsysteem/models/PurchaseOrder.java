@@ -2,7 +2,6 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +15,13 @@ public class PurchaseOrder extends Audit {
 
     private String vendorName;
     private Double totalPrice;
-    private Boolean orderStatus;
-
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
-    private List<Part> partList;
-
-    @OneToMany(mappedBy = "purchaseOrder", fetch = FetchType.LAZY)
-    private List<StockMovement> movements;
+    private Boolean isOpen;
 
     @OneToMany(mappedBy = "purchaseOrder")
-    private List<PurchaseOrderLineItem> items = new ArrayList<>();
+    private List<StockMovement> movements;
+
+    @OneToMany(mappedBy = "purchaseOrder",  fetch = FetchType.LAZY,  cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<POLineItem> items = new ArrayList<>();
 
     public Long getId() {
         return this.id;
@@ -47,15 +43,19 @@ public class PurchaseOrder extends Audit {
         this.totalPrice = totalPrice;
     }
 
-    public Boolean getOrderStatus() {
-        return this.orderStatus;
+    public Boolean getIsOpen() {
+        return this.isOpen;
     }
 
-    public void setOrderStatus(Boolean orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setIsOpen(Boolean orderStatus) {
+        this.isOpen = orderStatus;
     }
 
-    public List<PurchaseOrderLineItem> getItems() {
+    public List<POLineItem> getItems() {
         return this.items;
+    }
+
+    public void setItems(List<POLineItem> items) {
+        this.items = items;
     }
 }

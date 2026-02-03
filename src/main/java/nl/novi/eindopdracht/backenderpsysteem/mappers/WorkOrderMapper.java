@@ -8,6 +8,7 @@ public class WorkOrderMapper {
     public static WorkOrder toEntity(WorkOrderInputDto workOrderInputDto) {
         WorkOrder workOrder = new WorkOrder();
         workOrder.setRepairTime(workOrderInputDto.repairTime());
+        workOrder.setTotalCostAtClosure(0.0);
 
         return workOrder;
     }
@@ -16,13 +17,13 @@ public class WorkOrderMapper {
                 workOrder.getId(),
                 workOrder.getEquipment().getId(),
                 workOrder.getRepairTime(),
-                workOrder.getStatus(),
+                workOrder.getIsOpen(),
                 workOrder.getCreationDate(),
                 workOrder.getCreatedBy(),
                 workOrder.getModifiedBy(),
                 workOrder.getItems()
                         .stream()
-                        .map(WorkOrderLineItemMapper::toDto).
+                        .map(WOLineItemMapper::toDto).
                         toList()
         );
     }

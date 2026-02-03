@@ -18,13 +18,13 @@ public class PurchaseOrderMapper {
                 purchaseOrder.getId(),
                 purchaseOrder.getVendorName(),
                 purchaseOrder.getTotalPrice(),
-                purchaseOrder.getOrderStatus(),
+                purchaseOrder.getIsOpen(),
                 purchaseOrder.getCreationDate(),
                 purchaseOrder.getCreatedBy(),
                 purchaseOrder.getModifiedBy(),
                 purchaseOrder.getItems()
                         .stream()
-                        .map(PurchaseOrderLineItemMapper::toDto)
+                        .map(POLineItemMapper::toDto)
                         .toList()
         );
     }
