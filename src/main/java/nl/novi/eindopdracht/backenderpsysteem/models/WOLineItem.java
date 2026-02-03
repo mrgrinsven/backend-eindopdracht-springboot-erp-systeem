@@ -18,6 +18,7 @@ public class WOLineItem {
 
     private Integer quantity;
     private Integer receivedQuantity;
+    private Double totalIssuedCost;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -48,6 +49,14 @@ public class WOLineItem {
 
     public void setReceivedQuantity(Integer receivedQuantity) {
         this.receivedQuantity = receivedQuantity;
+    }
+
+    public Double getTotalIssuedCost() {
+        return totalIssuedCost;
+    }
+
+    public void setTotalIssuedCost(Double totalIssuedCost) {
+        this.totalIssuedCost = totalIssuedCost;
     }
 
     public Status getStatus() {

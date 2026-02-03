@@ -186,6 +186,9 @@ public class StockMovementService {
             throw new QuantityExceededException("Quantity exceeds stock limit. Maximum allowed is " + quantityAllowed);
         }
 
+        double addedIssueCost = part.getMovingAveragePrice() * quantityMovement;
+        woLineItem.setTotalIssuedCost(woLineItem.getTotalIssuedCost() + addedIssueCost);
+
         int newReceivedQuantity = quantityAlreadyReceived + quantityMovement;
         woLineItem.setReceivedQuantity(newReceivedQuantity);
 
@@ -233,6 +236,12 @@ public class StockMovementService {
 
         if (quantityMovement > quantityAllowed) {
             throw new QuantityExceededException("Quantity exceeds order limit. Maximum allowed is " + quantityAllowed);
+        }
+
+        if (quantityAllowed > 0) {
+            double currentTotalIssuedCost = woLineItem.getTotalIssuedCost();
+            double removedIssueCost = (currentTotalIssuedCost / quantityAllowed) * quantityMovement;
+            woLineItem.setTotalIssuedCost(currentTotalIssuedCost - removedIssueCost);
         }
 
         int newReceivedQuantity = quantityAllowed - quantityMovement;

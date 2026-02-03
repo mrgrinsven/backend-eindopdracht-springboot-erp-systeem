@@ -210,20 +210,15 @@ public class WorkOrderService {
         Equipment equipment = this.equipmentRepository.findById(workOrder.getEquipment().getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Equipment " + workOrder.getEquipment().getId() + " not found"));
 
-        if (workOrder.getTotalCostAtClosure() == 0.0) {
-            double newMaintenanceCost = workOrder.getItems()
-                    .stream()
-                    .mapToDouble(item -> {
-                        double price = item.getPart().getMovingAveragePrice();
-                        return item.getQuantity() * price;
-                    })
-                    .sum();
-            workOrder.setTotalCostAtClosure(newMaintenanceCost);
-        }
+        double newMaintenanceCost = workOrder.getItems()
+                .stream()
+                .mapToDouble(WOLineItem::getTotalIssuedCost)
+                .sum();
+        workOrder.setTotalCostAtClosure(newMaintenanceCost);
 
         double costToAdd = workOrder.getTotalCostAtClosure();
         double currentTotalMaintenanceCost = equipment.getTotalMaintenanceCost();
-        equipment.setTotalMaintenanceCost(currentTotalMaintenanceCost +  costToAdd);
+        equipment.setTotalMaintenanceCost(currentTotalMaintenanceCost + costToAdd);
 
         int newMaintenanceTime = workOrder.getRepairTime();
         int currentTotalMaintenanceTime = equipment.getTotalMaintenanceTime();
@@ -255,7 +250,6 @@ public class WorkOrderService {
         int currentTotalMaintenanceTime = equipment.getTotalMaintenanceTime();
         equipment.setTotalMaintenanceTime(currentTotalMaintenanceTime - timeToRemove);
 
-        workOrder.setTotalCostAtClosure(0.0);
         workOrder.setIsOpen(true);
 
         this.equipmentRepository.save(equipment);

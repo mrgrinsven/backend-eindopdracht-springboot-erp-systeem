@@ -9,6 +9,7 @@ public class WOLineItemMapper {
         WOLineItem WOLineItem = new WOLineItem();
         WOLineItem.setQuantity(woLineItemInputDto.quantity());
         WOLineItem.setReceivedQuantity(0);
+        WOLineItem.setTotalIssuedCost(0.0);
         return WOLineItem;
     }
 
