@@ -3,7 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.controllers;
 import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.StockMovementOutputDto;
-import nl.novi.eindopdracht.backenderpsysteem.service.StockMovementService;
+import nl.novi.eindopdracht.backenderpsysteem.services.StockMovementService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderOutputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PurchaseOrderUpdateDto;
-import nl.novi.eindopdracht.backenderpsysteem.service.PurchaseOrderService;
+import nl.novi.eindopdracht.backenderpsysteem.services.PurchaseOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

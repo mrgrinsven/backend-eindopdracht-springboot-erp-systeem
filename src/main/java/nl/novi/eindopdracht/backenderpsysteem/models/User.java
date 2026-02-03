@@ -2,16 +2,21 @@ package nl.novi.eindopdracht.backenderpsysteem.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Audit{
 
     @Id
-    @Column(nullable = false, unique = true)
     private String username;
+
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<Role>();
 
     public String getPassword() {
         return this.password;
@@ -27,5 +32,9 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Set<Role> getRoles() {
+        return this.roles;
     }
 }
