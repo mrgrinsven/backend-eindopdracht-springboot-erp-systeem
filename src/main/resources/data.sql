@@ -1,0 +1,1 @@
+insert into roles(role) values ('ROLE_TECHNICIAN'), ('ROLE_PURCHASER'), ('ROLE_MANAGER')

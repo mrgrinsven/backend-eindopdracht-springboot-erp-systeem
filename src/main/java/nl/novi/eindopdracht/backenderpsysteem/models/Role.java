@@ -1,15 +1,24 @@
 package nl.novi.eindopdracht.backenderpsysteem.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 public class Role {
 
     @Id
-    Long id;
     private String role;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

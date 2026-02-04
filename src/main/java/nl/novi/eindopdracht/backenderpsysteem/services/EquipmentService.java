@@ -1,4 +1,4 @@
-package nl.novi.eindopdracht.backenderpsysteem.service;
+package nl.novi.eindopdracht.backenderpsysteem.services;
 
 import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentOutputDto;

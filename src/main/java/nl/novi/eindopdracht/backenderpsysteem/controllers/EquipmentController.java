@@ -3,7 +3,7 @@ package nl.novi.eindopdracht.backenderpsysteem.controllers;
 import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.EquipmentOutputDto;
-import nl.novi.eindopdracht.backenderpsysteem.service.EquipmentService;
+import nl.novi.eindopdracht.backenderpsysteem.services.EquipmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

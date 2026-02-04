@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.ImageDownloadDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartInputDto;
 import nl.novi.eindopdracht.backenderpsysteem.dtos.PartOutputDto;
-import nl.novi.eindopdracht.backenderpsysteem.service.PartService;
+import nl.novi.eindopdracht.backenderpsysteem.services.PartService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
