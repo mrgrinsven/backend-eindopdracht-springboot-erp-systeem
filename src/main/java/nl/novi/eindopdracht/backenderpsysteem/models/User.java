@@ -15,8 +15,20 @@ public class User extends Audit{
 
     private String password;
 
+    @OneToOne(mappedBy ="user", cascade = CascadeType.ALL)
+    private ContactInformation contactInformation;
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<Role>();
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getPassword() {
         return this.password;
@@ -26,12 +38,12 @@ public class User extends Audit{
         this.password = password;
     }
 
-    public String getUsername() {
-        return this.username;
+    public ContactInformation getContactInformation() {
+        return this.contactInformation;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setContactInformation(ContactInformation contactInformation) {
+        this.contactInformation = contactInformation;
     }
 
     public Set<Role> getRoles() {
