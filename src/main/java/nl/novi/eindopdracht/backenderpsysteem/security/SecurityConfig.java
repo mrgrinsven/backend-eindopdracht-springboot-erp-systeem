@@ -52,8 +52,12 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/users").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/{username}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/me/password").authenticated()
 
                         .requestMatchers(HttpMethod.POST, "/equipments").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/equipments", "equipments/{id}").hasAnyRole("MANAGER", "TECHNICIAN")
