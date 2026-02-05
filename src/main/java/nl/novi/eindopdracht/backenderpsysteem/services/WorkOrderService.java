@@ -42,9 +42,7 @@ public class WorkOrderService {
     public WorkOrderOutputDto createWorkOrder(WorkOrderInputDto workOrderInputDto) {
         WorkOrder workOrder = WorkOrderMapper.toEntity(workOrderInputDto);
 
-        Equipment equipment = this.equipmentRepository.findById(workOrderInputDto.equipmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Equipment "
-                        + workOrderInputDto.equipmentId() + " not found"));
+        Equipment equipment = getEquipmentOrThrow(workOrderInputDto.equipmentId());
         workOrder.setEquipment(equipment);
         workOrder.setIsOpen(true);
 
@@ -54,8 +52,7 @@ public class WorkOrderService {
                 .map(itemDto -> {
                     WOLineItem item = WOLineItemMapper.toEntity(itemDto);
 
-                    Part part = this.partRepository.findById(itemDto.partId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Part " + itemDto.partId() + " not found"));
+                    Part part = getPartOrThrow(itemDto.partId());
 
                     item.setPart(part);
                     item.setStatus(WOLineItem.Status.OPEN);
@@ -91,23 +88,20 @@ public class WorkOrderService {
 
     @Transactional(readOnly = true)
     public WorkOrderOutputDto getWorkOrderById(Long id) {
-        WorkOrder workOrder = this.workOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("WorkOrder " + id + " not found"));
+        WorkOrder workOrder = getWorkOrderOrThrow(id);
 
         return WorkOrderMapper.toDto(workOrder);
     }
 
     @Transactional
     public WorkOrderOutputDto updateWorkOrderById(Long id, WorkOrderUpdateDto workOrderUpdateDto) {
-        WorkOrder workOrder = this.workOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+        WorkOrder workOrder = getWorkOrderOrThrow(id);
 
         if (!workOrder.getIsOpen()) {
             throw new OrderLineImmutableException("Work order " + id + " can not be modified order is closed");
         }
 
-        Equipment equipment = this.equipmentRepository.findById(workOrderUpdateDto.equipmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Equipment " + workOrderUpdateDto.equipmentId() + " not found"));
+        Equipment equipment = getEquipmentOrThrow(workOrderUpdateDto.equipmentId());
 
         if (!workOrderUpdateDto.repairTime().equals(workOrder.getRepairTime())) {
             workOrder.setRepairTime(workOrderUpdateDto.repairTime());
@@ -142,8 +136,7 @@ public class WorkOrderService {
                 WOLineItem lineItem = this.woLineItemRepository.findById(itemDto.id())
                         .orElseThrow(() -> new ResourceNotFoundException("Work order lineItem " + itemDto.id() + " not found"));
 
-                Part part = this.partRepository.findById(itemDto.partId()).orElseThrow(
-                        () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found"));
+                Part part = getPartOrThrow(itemDto.partId());
 
                 if (!Objects.equals(part.getId(), lineItem.getPart().getId())) {
                     if (lineItem.getStatus() != WOLineItem.Status.OPEN) {
@@ -174,8 +167,7 @@ public class WorkOrderService {
                 this.woLineItemRepository.save(lineItem);
             } else {
                 WOLineItem item = WOLineItemUpdateMapper.toEntity(itemDto);
-                Part part = this.partRepository.findById(itemDto.partId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Part " + itemDto.partId() + " not found"));
+                Part part = getPartOrThrow(itemDto.partId());
                 item.setPart(part);
                 item.setStatus(WOLineItem.Status.OPEN);
                 item.setWorkOrder(workOrder);
@@ -191,8 +183,7 @@ public class WorkOrderService {
 
     @Transactional
     public void closeWorkOrderById(Long id) {
-        WorkOrder workOrder = this.workOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+        WorkOrder workOrder = getWorkOrderOrThrow(id);
 
         if (!workOrder.getIsOpen()) {
             throw new OrderStateConflictException("Work order " + id + " already closed");
@@ -207,8 +198,7 @@ public class WorkOrderService {
             throw new OrderStateConflictException("Work order " + id + " has items that need to be closed");
         }
 
-        Equipment equipment = this.equipmentRepository.findById(workOrder.getEquipment().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Equipment " + workOrder.getEquipment().getId() + " not found"));
+        Equipment equipment = getEquipmentOrThrow(workOrder.getEquipment().getId());
 
         double newMaintenanceCost = workOrder.getItems()
                 .stream()
@@ -232,15 +222,13 @@ public class WorkOrderService {
 
     @Transactional
     public void openWorkOrderById(Long id) {
-        WorkOrder workOrder = this.workOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+        WorkOrder workOrder = getWorkOrderOrThrow(id);
 
         if (workOrder.getIsOpen() == true) {
             throw new OrderStateConflictException("Work order " + id + " already open");
         }
 
-        Equipment equipment = this.equipmentRepository.findById(workOrder.getEquipment().getId()).orElseThrow(
-                () -> new ResourceNotFoundException("Equipment " + workOrder.getEquipment().getId() + " not found"));
+        Equipment equipment = getEquipmentOrThrow(workOrder.getEquipment().getId());
 
         Double amountToRemove = workOrder.getTotalCostAtClosure();
         Double currentTotalMaintenanceCost = equipment.getTotalMaintenanceCost();
@@ -254,5 +242,20 @@ public class WorkOrderService {
 
         this.equipmentRepository.save(equipment);
         this.workOrderRepository.save(workOrder);
+    }
+
+    private Equipment getEquipmentOrThrow(Long id) {
+        return this.equipmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));
+    }
+
+    private WorkOrder getWorkOrderOrThrow(Long id) {
+        return this.workOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Work order " + id + " not found"));
+    }
+
+    private Part getPartOrThrow(Long id) {
+        return this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
     }
 }

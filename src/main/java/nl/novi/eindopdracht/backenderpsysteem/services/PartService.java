@@ -45,16 +45,14 @@ public class PartService {
 
     @Transactional(readOnly = true)
     public PartOutputDto getPartById(Long id) {
-        Part part = this.partRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
+        Part part = getPartOrThrow(id);
 
         return PartMapper.toDto(part);
     }
 
     @Transactional(readOnly = true)
     public ImageDownloadDto getPartImageById(Long id) throws IOException {
-        Part part = this.partRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
+        Part part = getPartOrThrow(id);
 
         byte[] image = part.getImage();
         if (image == null) {
@@ -75,8 +73,7 @@ public class PartService {
 
     @Transactional
     public void updatePartById(Long id, PartInputDto partInputDto) {
-        Part part = this.partRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
+        Part part = getPartOrThrow(id);
 
         part.setName(partInputDto.name());
         part.setPartNumber(partInputDto.partNumber());
@@ -97,10 +94,14 @@ public class PartService {
             throw new ImageNotValidException("Please select an image type!");
         }
 
-        Part part = this.partRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
+        Part part = getPartOrThrow(id);
 
         part.setImage(file.getBytes());
         this.partRepository.save(part);
+    }
+
+    private Part getPartOrThrow(Long id) {
+        return this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
     }
 }

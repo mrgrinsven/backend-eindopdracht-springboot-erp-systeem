@@ -44,8 +44,7 @@ public class PurchaseOrderService {
                 .map(itemDto -> {
                     POLineItem item = POLineItemMapper.toEntity(itemDto);
 
-                    Part part = this.partRepository.findById(itemDto.partId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Part " + itemDto.partId() + " not found"));
+                    Part part = getPartOrThrow(itemDto.partId());
 
                     item.setPart(part);
                     item.setDeliveryStatus(POLineItem.DeliveryStatus.OPEN);
@@ -87,15 +86,13 @@ public class PurchaseOrderService {
 
     @Transactional(readOnly = true)
     public PurchaseOrderOutputDto getPurchaseOrderById(Long id) {
-        PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder " + id + " not found"));
+        PurchaseOrder purchaseOrder = getPurchaseOrderOrThrow(id);
         return PurchaseOrderMapper.toDto(purchaseOrder);
     }
 
     @Transactional
     public PurchaseOrderOutputDto updatePurchaseOrderById(Long id, PurchaseOrderUpdateDto purchaseOrderUpdateDto) {
-        PurchaseOrder purchaseOrder = this.purchaseOrderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder " + id + " not found"));
+        PurchaseOrder purchaseOrder = getPurchaseOrderOrThrow(id);
 
         Set<Long> poLineItemIds = purchaseOrderUpdateDto
                 .items()
@@ -127,8 +124,7 @@ public class PurchaseOrderService {
                     throw new OrderLineImmutableException("Purchase order lineItem " + itemDto.id() + " can not be modified, it has CANCELED status");
                 }
 
-                Part part = this.partRepository.findById(itemDto.partId()).orElseThrow(
-                        () -> new ResourceNotFoundException("Part" + itemDto.partId() + " not found"));
+                Part part = getPartOrThrow(itemDto.partId());
 
                 if (!Objects.equals(part.getId(), lineItem.getPart().getId())) {
                     if (lineItem.getDeliveryStatus() != POLineItem.DeliveryStatus.OPEN) {
@@ -167,8 +163,7 @@ public class PurchaseOrderService {
             } else {
                 POLineItem item = POLineItemUpdateMapper.toEntity(itemDto);
 
-                Part part = this.partRepository.findById(itemDto.partId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Part " + itemDto.partId() + " not found"));
+                Part part = getPartOrThrow(itemDto.partId());
 
                 item.setPart(part);
                 item.setDeliveryStatus(POLineItem.DeliveryStatus.OPEN);
@@ -194,5 +189,15 @@ public class PurchaseOrderService {
         this.purchaseOrderRepository.save(purchaseOrder);
 
         return PurchaseOrderMapper.toDto(purchaseOrder);
+    }
+
+    private Part getPartOrThrow(Long id) {
+        return this.partRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part " + id + " not found"));
+    }
+
+    private PurchaseOrder getPurchaseOrderOrThrow(Long id) {
+        return this.purchaseOrderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PurchaseOrder " + id + " not found"));
     }
 }
