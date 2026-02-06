@@ -3,10 +3,10 @@ values ('ROLE_TECHNICIAN'), ('ROLE_PURCHASER'), ('ROLE_MANAGER');
 
 insert into users (username, password, created_by, modified_by, creation_date, modification_date)
 values
-    ('admin', '$2a$10$vI8p.P/Nf6v.A5D7/O7SnuoXG3j7P7G7pT7G7pT7G7pT7G7pT7G7p', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('test_manager', '$2a$10$8.UnVuG9HHgffUDAlk8qn.6nQH22LumW07L7XERL16JzG1L.E.P6i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('test_technician', '$2a$10$8.UnVuG9HHgffUDAlk8qn.6nQH22LumW07L7XERL16JzG1L.E.P6i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('test_purchaser', '$2a$10$8.UnVuG9HHgffUDAlk8qn.6nQH22LumW07L7XERL16JzG1L.E.P6i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('admin', '$2a$12$VhwuLkUhdcsasTZjOW9a5.94bjNKOgYQdBRnkb0tXyjah4TppfVBe', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('test_manager', '$2a$12$wG9lTN/u/iZmH8nCjD2L5.K0Nl42INWLa8fhzB66B1Tium6vyzf5i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('test_technician', '$2a$12$wG9lTN/u/iZmH8nCjD2L5.K0Nl42INWLa8fhzB66B1Tium6vyzf5i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('test_purchaser', '$2a$12$wG9lTN/u/iZmH8nCjD2L5.K0Nl42INWLa8fhzB66B1Tium6vyzf5i', 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 insert into contact_information (username, phone_number, business_email, created_by, modified_by, creation_date, modification_date)
 values
@@ -49,7 +49,7 @@ values
     (2, 2, 0, 0.00, 'OPEN', 2, 1),
     (3, 1, 1, 480.00, 'CLOSED', 1, 2),
     (4, 2, 2, 760.00, 'CLOSED', 2, 2),
-    (5, 4, 2, 960.00, 'PARTIAL', 1, 2);
+    (5, 2, 2, 960.00, 'CLOSED', 1, 3);
 alter sequence work_order_line_items_seq restart with 100;
 
 insert into purchase_orders (id, vendor_name, total_price, is_open, created_by, modified_by, creation_date, modification_date)
@@ -58,11 +58,11 @@ values
     (2, 'Apple Inc', 760.00, false, 'SYSTEM', 'SYSTEM', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 alter sequence purchase_orders_seq restart with 100;
 
-insert into purchase_orders_line_items (id, quantity, received_quantity, unit_price, delivery_date, delivery_status, part_id, purchase_order_id)
+insert into purchase_order_line_items (id, quantity, received_quantity, unit_price, delivery_date, delivery_status, part_id, purchase_order_id)
 values
     (1, 1, 0, 480.00, '2026-03-20', 'OPEN', 1, 1),
     (2, 2, 2, 380.00, '2026-01-02', 'CLOSED', 2, 2);
-alter sequence purchase_orders_line_items_seq restart with 100;
+alter sequence purchase_order_line_items_seq restart with 100;
 
 insert into stock_movements (id, quantity, movement_type, purchase_order_id, work_order_id, part_id, created_by, modified_by, creation_date, modification_date)
 values

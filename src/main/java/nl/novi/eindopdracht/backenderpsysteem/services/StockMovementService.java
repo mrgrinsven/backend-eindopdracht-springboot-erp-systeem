@@ -150,7 +150,7 @@ public class StockMovementService {
         double newMovingAveragePrice;
         newMovingAveragePrice = (part.getMovingAveragePrice() * part.getStockQuantity() -
                 poLineItem.getUnitPrice() * stockMovement.getQuantity()) /
-                part.getStockQuantity() - stockMovement.getQuantity();
+                (part.getStockQuantity() - stockMovement.getQuantity());
         part.setMovingAveragePrice(newMovingAveragePrice);
 
         int currentStockQuantity = part.getStockQuantity();

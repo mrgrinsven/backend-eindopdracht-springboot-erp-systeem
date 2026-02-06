@@ -59,9 +59,11 @@ public class SecurityConfig  {
                         .requestMatchers(HttpMethod.GET, "/users/{username}").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/me/password").authenticated()
 
+                        .requestMatchers(HttpMethod.GET, "/roles").hasRole("MANAGER")
+
                         .requestMatchers(HttpMethod.POST, "/equipments").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/equipments", "/equipments/{id}").hasAnyRole("MANAGER", "TECHNICIAN")
-                        .requestMatchers(HttpMethod.PUT, "/equipments").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/equipments/{id}").hasRole("MANAGER")
 
                         .requestMatchers(HttpMethod.POST, "/parts").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/parts/**").authenticated()
@@ -77,7 +79,7 @@ public class SecurityConfig  {
                         .requestMatchers(HttpMethod.PUT, "/work-orders/**").hasRole("MANAGER")
 
 
-                        .requestMatchers(HttpMethod.POST, "/stockmovements").hasAnyRole("MANAGER", "TECHNICIAN")
+                        .requestMatchers(HttpMethod.POST, "/stockmovements/**").hasAnyRole("MANAGER", "TECHNICIAN")
                         .requestMatchers(HttpMethod.GET, "/stockmovements/**").authenticated()
 
                         .anyRequest().denyAll()
