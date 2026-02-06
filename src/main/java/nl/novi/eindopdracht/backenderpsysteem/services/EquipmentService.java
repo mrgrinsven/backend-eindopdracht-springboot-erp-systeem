@@ -39,19 +39,22 @@ public class EquipmentService {
 
     @Transactional(readOnly = true)
     public EquipmentOutputDto getEquipmentById(Long id) {
-        Equipment equipment = this.equipmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));
+        Equipment equipment = getEquipmentOrThrow(id);
 
         return EquipmentMapper.toDto(equipment);
     }
 
     @Transactional
     public void updateEquipmentById(Long id, EquipmentInputDto equipmentInputDto) {
-        Equipment equipment = this.equipmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));
+        Equipment equipment = getEquipmentOrThrow(id);
 
         equipment.setName(equipmentInputDto.name());
 
         this.equipmentRepository.save(equipment);
+    }
+
+    private Equipment getEquipmentOrThrow(Long id) {
+        return this.equipmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipment " + id + " not found"));
     }
 }
